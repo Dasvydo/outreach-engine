@@ -1,0 +1,36 @@
+{
+  "id": "capacity",
+  "framing": "capacity",
+  "hypothesis": "Take on more clients without hiring. Partner-level, revenue-shaped. Reasoned from a prospect rejecting the hours-saved lever outright: 'what do I make per hour? That's not the issue.' UNTESTED - this is the variable under test.",
+  "steps": [
+    {
+      "day": 0,
+      "subject": {
+        "en": "{{companyName}} — busiest weeks",
+        "da": "{{companyName}} — de travleste uger",
+        "lt": "{{companyName}} — judriausios savaitės"
+      },
+      "body": {
+        "en": "Hi {{firstName}},\n\nQuick question about {{companyName}}'s busiest weeks.\n\nWhen the deadline rush hits, the constraint usually isn't the work — it's that the same client questions arrive faster than anyone can answer them. Deadlines, what documents you need, what something costs.\n\nWe turn a firm's own fee schedule, deadlines and policies into a reply that's already sitting in each person's Outlook drafts. Their own wording. Nothing sends until they read it.\n\nThe point isn't saving minutes — it's taking on more clients without adding headcount.\n\nWorth fifteen minutes?\n\n{{sendingAccountFirstName}}",
+        "da": "NEEDS_NATIVE_PROOFREAD",
+        "lt": "NEEDS_NATIVE_PROOFREAD"
+      }
+    },
+    {
+      "day": 3,
+      "subject": {"en": "Re: {{companyName}} — busiest weeks", "da": "NEEDS_NATIVE_PROOFREAD", "lt": "NEEDS_NATIVE_PROOFREAD"},
+      "body": {
+        "en": "{{firstName}} — one detail I left out.\n\nWe build the knowledge base for you. Fees, deadlines, document checklists, engagement terms. Most tools hand you an upload box and wish you luck; that's why most firms never finish.\n\nIf the drafts aren't good enough to send after 30 days, you don't pay — and you keep the knowledge base.\n\n{{sendingAccountFirstName}}",
+        "da": "NEEDS_NATIVE_PROOFREAD", "lt": "NEEDS_NATIVE_PROOFREAD"
+      }
+    },
+    {
+      "day": 7,
+      "subject": {"en": "Closing the loop", "da": "NEEDS_NATIVE_PROOFREAD", "lt": "NEEDS_NATIVE_PROOFREAD"},
+      "body": {
+        "en": "{{firstName}} — I'll stop here.\n\nIf it's useful later: it runs inside the Outlook your team already uses, it never sends anything on its own, and it runs on European servers.\n\nWe're taking ten firms as design partners at half price. If {{companyName}} wants one of those places, reply and I'll hold it.\n\n{{sendingAccountFirstName}}",
+        "da": "NEEDS_NATIVE_PROOFREAD", "lt": "NEEDS_NATIVE_PROOFREAD"
+      }
+    }
+  ]
+}

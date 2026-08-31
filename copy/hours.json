@@ -1,0 +1,35 @@
+{
+  "id": "hours",
+  "framing": "hours-saved",
+  "hypothesis": "CONTROL ARM. The framing currently on the pricing page and in the ROI calculator. A prospect rejected it directly on tape, so the expectation is that it loses - but it has never been measured, and replacing a live framing on one anecdote would be its own mistake. Runs against 'capacity' to settle it with data.",
+  "steps": [
+    {
+      "day": 0,
+      "subject": {
+        "en": "{{companyName}} — hours back",
+        "da": "{{companyName}} — timer tilbage",
+        "lt": "{{companyName}} — sutaupytos valandos"
+      },
+      "body": {
+        "en": "Hi {{firstName}},\n\nMost people at a firm like {{companyName}} lose around twenty minutes a day to routine client email — the same questions about deadlines, documents and fees, answered again and again.\n\nAcross a team that's a working week every month.\n\nWe turn your own fee schedule, deadlines and policies into a reply that's already waiting in each person's Outlook drafts, in their own wording. Nothing sends until they read it.\n\nWorth fifteen minutes?\n\n{{sendingAccountFirstName}}",
+        "da": "NEEDS_NATIVE_PROOFREAD", "lt": "NEEDS_NATIVE_PROOFREAD"
+      }
+    },
+    {
+      "day": 3,
+      "subject": {"en": "Re: {{companyName}} — hours back", "da": "NEEDS_NATIVE_PROOFREAD", "lt": "NEEDS_NATIVE_PROOFREAD"},
+      "body": {
+        "en": "{{firstName}} — one detail I left out.\n\nWe build the knowledge base for you. Fees, deadlines, document checklists, engagement terms. Most tools hand you an upload box and wish you luck; that's why most firms never finish.\n\nIf the drafts aren't good enough to send after 30 days, you don't pay — and you keep the knowledge base.\n\n{{sendingAccountFirstName}}",
+        "da": "NEEDS_NATIVE_PROOFREAD", "lt": "NEEDS_NATIVE_PROOFREAD"
+      }
+    },
+    {
+      "day": 7,
+      "subject": {"en": "Closing the loop", "da": "NEEDS_NATIVE_PROOFREAD", "lt": "NEEDS_NATIVE_PROOFREAD"},
+      "body": {
+        "en": "{{firstName}} — I'll stop here.\n\nIf it's useful later: it runs inside the Outlook your team already uses, it never sends anything on its own, and it runs on European servers.\n\nWe're taking ten firms as design partners at half price. If {{companyName}} wants one of those places, reply and I'll hold it.\n\n{{sendingAccountFirstName}}",
+        "da": "NEEDS_NATIVE_PROOFREAD", "lt": "NEEDS_NATIVE_PROOFREAD"
+      }
+    }
+  ]
+}

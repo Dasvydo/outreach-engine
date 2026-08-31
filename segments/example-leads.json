@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Nordic Revision ApS",
+    "domain": "cbs.dk",
+    "country": "DK",
+    "vertical": "accounting",
+    "nace": "69.20",
+    "employees": 14,
+    "city": "København",
+    "registry_id": "DK12345678",
+    "has_dev_team": false,
+    "source": "datacvr.virk.dk",
+    "contacts": [
+      {"email": "lars@example.dk", "first_name": "Lars", "last_name": "Holm", "title": "Partner"}
+    ]
+  },
+  {
+    "name": "Tiny Books",
+    "domain": "example.com",
+    "country": "DK",
+    "vertical": "accounting",
+    "nace": "69.20",
+    "employees": 3,
+    "has_dev_team": false,
+    "source": "datacvr.virk.dk",
+    "contacts": [{"email": "a@example.com", "first_name": "Ana"}]
+  },
+  {
+    "name": "DevShop Accounting",
+    "domain": "github.com",
+    "country": "DK",
+    "vertical": "accounting",
+    "employees": 40,
+    "has_dev_team": true,
+    "contacts": [{"email": "b@example.com", "first_name": "Bo"}]
+  }
+]

@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.venv/
+queue/*.csv
+queue/leads-*.json
+.env
