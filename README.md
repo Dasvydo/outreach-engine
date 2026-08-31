@@ -25,6 +25,8 @@ produce more of them.
 pip install -r requirements.txt
 
 python -m engine.cli counts                       # live DK registry counts
+python -m engine.cli cvr-check                    # is CVR API access working?
+python -m engine.cli list-dk --vertical accounting --out segments/accounting-dk.json
 python -m engine.cli mx cbs.dk pwc.dk doviloop.dev # who runs their mail
 python -m engine.cli gate segments/example-leads.json
 python -m engine.cli build segments/example-leads.json --variant capacity --out queue/acc-dk.csv
@@ -32,12 +34,23 @@ python -m engine.cli build segments/example-leads.json --variant capacity --out 
 
 ## The four stages
 
-**1. Registry.** `engine/registry.py` pulls live counts from Statistics Denmark's
-open StatBank API (no key). Denmark is the strong side — CVR is filterable by
-industry code, employee band and municipality. **Lithuania has no open
-equivalent**, and the LT fetchers are deliberately unimplemented rather than
-stubbed: a function returning plausible numbers is worse than an honest gap,
-because the numbers get quoted. `lt_sources()` names the real routes.
+**1. Registry.** Two modules, because counting and enumerating are different
+problems. `engine/registry.py` pulls live counts from Statistics Denmark's open
+StatBank API (no key) — 4,882 Danish accounting enterprises, the denominator.
+`engine/cvr.py` turns that denominator into named firms from the Danish Business
+Authority's CVR company index, filtered by branchekode, employee band and
+municipality.
+
+**CVR is free but credentialed**, and we do not have credentials yet — so
+`list-dk` currently stops at a 401. `docs/CVR-ACCESS.md` is the write-up: how to
+request access, and the routes that were probed and rejected. Note in particular
+that CVR marks advertising-protected firms (`reklamebeskyttet`) who may not be
+approached; `cvr.py` drops them during the harvest and counts the drops.
+
+**Lithuania has no open equivalent**, and the LT fetchers are deliberately
+unimplemented rather than stubbed: a function returning plausible numbers is
+worse than an honest gap, because the numbers get quoted. `lt_sources()` names
+the real routes.
 
 **2. Enrich.** `engine/enrich.py` classifies each domain's mail provider from one
 MX lookup. No key, no cost, one DNS query. **This is the highest-value enrichment
@@ -72,6 +85,12 @@ one anecdote would be its own mistake. Run both, settle it with reply rate.
 Danish and Lithuanian bodies are **drafted, not native-checked**, and carry a
 `NEEDS_NATIVE_PROOFREAD` sentinel. `render()` refuses to build them by default.
 Pass `--allow-english-fallback` to send English instead — never ship the sentinel.
+
+**This currently blocks the A/B.** Every step of both variants is sentinel in
+`da`, so `build` refuses for any Danish lead. `--allow-english-fallback` ships
+English and labels the CSV `language=en`, so those leads are not routed to a
+Danish sequence — but an English cold email into Denmark is a different
+experiment from the one the brief describes.
 
 Getting a native speaker on the DA and LT copy is the single highest-leverage
 task in this repo. The product ships in both languages; outreach that doesn't
