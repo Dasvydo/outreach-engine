@@ -20,7 +20,15 @@ COLUMNS = [
 ]
 
 
-def to_csv(campaign: Campaign, out: Path) -> Path:
+def to_csv(campaign: Campaign, out: Path, *,
+           rendered_language: str | None = None) -> Path:
+    """Write the campaign as an Instantly CSV.
+
+    `rendered_language` overrides the per-contact language column. Pass "en"
+    when the sequence fell back to English because the local copy is not
+    proofread: the column routes the lead to a sequence, so leaving it at "da"
+    would point English-bodied leads at a Danish sequence.
+    """
     out = Path(out)
     out.parent.mkdir(parents=True, exist_ok=True)
 
@@ -45,7 +53,7 @@ def to_csv(campaign: Campaign, out: Path) -> Path:
                 "mailProvider": firm.provider.value,
                 "gateScore": verdict.score,
                 "gateNotes": "; ".join(verdict.reasons),
-                "language": contact.language,
+                "language": rendered_language or contact.language,
                 "cell": campaign.cell,
             })
     return out

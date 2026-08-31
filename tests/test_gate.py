@@ -50,3 +50,23 @@ def test_partition_sorts_microsoft_above_google():
     ms, goog = _firm(name="MS"), _firm(name="G", provider=Provider.GOOGLE)
     kept, _ = partition([goog, ms])
     assert [f.name for f in kept] == ["MS", "G"]
+
+
+def test_english_fallback_is_labelled_english_in_the_csv(tmp_path):
+    """The language column routes a lead to a sequence.
+
+    A Danish firm sent English fallback copy must not be labelled 'da', or it
+    gets routed to a Danish sequence its body was never written for.
+    """
+    from engine.export import to_csv
+    from engine.model import Campaign, Contact
+
+    contact = Contact(firm=_firm(), email="a@x.dk", first_name="Lars")
+    assert contact.language == "da"
+    camp = Campaign("c", "accounting", "DK", "capacity", [contact])
+
+    out = to_csv(camp, tmp_path / "da.csv").read_text()
+    assert out.strip().splitlines()[1].split(",")[-2] == "da"
+
+    out = to_csv(camp, tmp_path / "en.csv", rendered_language="en").read_text()
+    assert out.strip().splitlines()[1].split(",")[-2] == "en"
