@@ -10,6 +10,7 @@ brief in `docs/ICP-BRIEF.md`.
 segments/<name>.json    who      firms + contacts, one file per list build
 copy/<variant>.json     the words  sequence variants, one per A/B arm
 engine/                 the code   registry -> enrich -> gate -> sequence -> export
+.claude/skills/         the hands  what happens after someone replies
 queue/                  state      built campaigns (gitignored)
 ```
 
@@ -89,6 +90,37 @@ countries, and Lithuania's is a *closed licensed register of 105* — the entire
 market, not a sample. Enumerate by hand, go LinkedIn and the broker associations,
 and read the result qualitatively. Do not compare its reply rate against
 accounting's.
+
+## After the reply
+
+`engine/` ends at a CSV. Everything past that point is judgement, not code, and
+lives as skills in `.claude/skills/` — in the repo rather than `~/.claude/`, so
+they are versioned with the engine and reviewed in a PR.
+
+| Skill | When |
+|---|---|
+| `outreach-objections` | A reply carries a concern. LAER, and the five objections this ICP actually raises |
+| `outreach-followup` | Anything after a reply — post-call, post-proposal, gone quiet |
+| `outreach-call-prep` | A call is booked. One page, 15 minutes, built to test **G3** |
+| `outreach-proposal` | They want terms in writing |
+
+Adapted from [ai-sales-team-claude](https://github.com/zubair-trabzada/ai-sales-team-claude)
+(MIT) — see `.claude/skills/ATTRIBUTION.md` for what changed and why.
+
+Three rules run through all four, and they are the reason these are adaptations
+rather than copies:
+
+- **No fabricated proof.** There are no customers yet. Where a normal sales
+  asset reaches for a case study, these reach for the 30-day guarantee.
+- **No ROI arithmetic.** A prospect rejected that lever on tape. Capacity, not
+  hours.
+- **No unreviewed DA/LT.** Drafts come out in English marked `NEEDS NATIVE
+  REVIEW`. The sentinel never reaches a document.
+
+The skills do not touch the cold sequence. `engine/sequence.py` owns that, and
+its copy is held constant so the A/B stays readable — personalising a cold email
+would destroy the experiment. After a reply, the experiment has already recorded
+its outcome, and personalisation costs nothing.
 
 ## Deliverability
 
