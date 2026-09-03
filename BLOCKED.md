@@ -278,3 +278,171 @@ of this batch on purpose.
 **Unblocks it:** run the existing DSD pipeline over `lists/*.csv`, or find the
 contacts by hand. At 41 companies, by hand is a couple of hours and produces
 better role targeting than a scraper would.
+
+---
+
+# Reconciliation with Batch B's real ledger — 2026-09-03
+
+Batch B's `campaign_db.py` and `migrations/001_schema.sql` became readable after
+both batches were finished. This repo had been calling B's functions by the right
+names with the wrong arguments, and its own shim accepts any keyword, so the
+suite was green and the mismatch was invisible. The translation now happens in
+`engine/ledger.py` and is proved against B's real signatures in
+`tests/test_ledger_contract.py`.
+
+Four entries below. C-B1 and C-B2 are schema gaps: information this repo
+produces that has no column in `campaign`. Nothing is dropped — every one of
+them is folded into an existing text column — but folded into free text is not
+the same as queryable, and the Friday brief cannot group by a string.
+
+---
+
+## C-B1 — `campaign.companies` has no `city`, `team_size`, `stage` or `notes`
+
+**Missing:** four columns. `campaign.companies` is `id, name, domain, market,
+segment, country, est_size, uses_m365, has_dev_team, fit_score, hook_seed,
+source, dsd_company_id, created_at`. This repo's finder produces four more
+things:
+
+| this repo   | what it is                                              | why it matters |
+|-------------|---------------------------------------------------------|----------------|
+| `city`      | the town the firm is in                                  | the DK list is Copenhagen-heavy and nobody can see that from the ledger |
+| `team_size` | the qualifier contract's band (`1-9`/`10-24`/`25-49`/`50+`) | `est_size` is an integer and is NULL whenever the headcount could only be banded, not counted |
+| `stage`     | `discovered`/`queued`/`contacted`/`qualified`/`too_small`/`disqualified` | the finder writes hard-gate failures deliberately, so the next run stops rediscovering them. Without `stage` a disqualified firm is indistinguishable from a live prospect |
+| `notes`     | the MX host and the gate's verdict, e.g. `MX=…outlook.com; over the 200-seat ceiling` | the only record of **why** a firm was disqualified |
+
+**Blocks:** nothing today. `engine/ledger.py` folds all four into the `hook_seed`
+text column as `key=value` pairs, so `hook_seed` reads
+`city=Aarhus; team_size=10-24; stage=disqualified; notes=MX=…; 1,500 staff`.
+Asserted in `tests/test_ledger_contract.py`.
+
+**What it costs:** `hook_seed` is meant to seed a hook, and it is now also
+carrying four other things. Nothing can filter on `stage` in SQL, and re-running
+the finder against a populated ledger cannot cheaply skip disqualified firms —
+it re-derives them from scratch every time.
+
+**Unblocks it:** four columns on `campaign.companies`:
+
+```sql
+alter table campaign.companies add column city       text;
+alter table campaign.companies add column team_size  campaign.team_size;
+alter table campaign.companies add column stage      text;   -- or a new enum
+alter table campaign.companies add column notes      text;
+```
+
+Then delete `_hook_seed_with_overflow()` in `engine/ledger.py` and map the four
+straight through. `stage` deserves an enum of its own; the six values are in
+`COMPANY_COLUMNS` at the top of that file.
+
+A fifth, smaller one: this repo tracks `updated_at`, B's table has only
+`created_at`. An enriched company cannot be told from a freshly discovered one.
+
+---
+
+## C-B2 — `campaign.touches` has no `sequence_id`, `utm_content`, `status` or `market`
+
+**Missing:** four columns. `campaign.touches` is `id, contact_id, channel,
+sequence_step, language, sent_at, replied_at, reply_sentiment, notes`. This repo
+sends four more:
+
+| this repo      | what it is                          | why it matters |
+|----------------|-------------------------------------|----------------|
+| `sequence_id`  | `linkedin_da`, `email_en`, `phone_lt` | which copy variant was sent. Without it an A/B test cannot be read |
+| `utm_content`  | `{market}_{step}`                    | **the only link between a touch and the landing-page hit it produced.** It is what the qualifier form echoes back in `leads.utm_content` |
+| `status`       | `planned`/`sent`/`bounced`/`skipped` | a queued LinkedIn connect and one that actually went out are not the same event. `sent_at` being NULL is close but says nothing about a bounce |
+| `market`       | `dk`/`lt`/`global`                   | reachable through `contact -> company`, but only with a join B exposes no reader for |
+
+**Blocks:** nothing today. All four are folded into `touches.notes`, along with
+the `company_domain` and `work_email` the touch was resolved from, so the row
+stays auditable.
+
+**What it costs:** the utm link is the expensive one. `campaign.leads` has
+`utm_content` as a real column; `campaign.touches` has it inside a text blob. The
+join that answers "which sequence produced this lead" is a `LIKE` over free text
+rather than an index lookup.
+
+**Unblocks it:**
+
+```sql
+alter table campaign.touches add column sequence_id  text;
+alter table campaign.touches add column utm_content  text;
+alter table campaign.touches add column status       text;   -- or a new enum
+create index touches_utm_content_idx on campaign.touches (utm_content);
+```
+
+Then trim `_touch_notes()` in `engine/ledger.py` to the fields that are genuinely
+notes.
+
+---
+
+## C-B3 — `campaign_db` has no reader, so a touch has to create its own contact
+
+**Missing:** any way to look a company or a contact up by domain or by email.
+B's eleven functions are eight writes and three aggregate views (see B14, which
+found the same hole from the other direction).
+
+**Why it bites here:** `campaign.touches.contact_id` is NOT NULL with a foreign
+key onto `campaign.contacts`. This repo works from company domains and work
+email addresses and does not have contact ids. There is no `get_contact(email)`
+to ask.
+
+**Workaround shipped, and it does work.** `engine/ledger.py` resolves the id
+before every touch, in this order:
+
+1. an explicit `contact_id`, if the caller has one;
+2. an explicit `company_id`, or one this process cached when it upserted the
+   firm, plus the work email — straight to `upsert_contact`;
+3. the company name and domain the contact row already carries — `upsert_company`
+   (idempotent on domain, so this is a merge and not a second row), then
+   `upsert_contact` (idempotent on `(company_id, natural_key)`, where the natural
+   key is the LinkedIn URL else the email, so the same person resolves to the
+   same row every time).
+
+So **yes, `log_touch` can now supply a real `contact_id`** for every path in this
+repo: `load_instantly.py` and `build_linkedin_queue.py` both work from
+`ContactRow`, which carries the company name, and `sync_replies.py` now matches
+each reply back to the contacts export by email before writing.
+
+**Where it still fails, loudly:** a reply from an address that is not in the
+contacts export has no name and no firm to resolve, and
+`LedgerContactUnresolved` is raised naming exactly what was missing. It is never
+written under a guessed identity, and never silently dropped. In practice this
+is a reply to a touch this repo never logged, which is worth seeing.
+
+**What it costs:** every first touch in a fresh process is three round trips
+instead of one. The company id is cached per process, so a run of 200 contacts
+across 40 firms is 40 company upserts, not 200.
+
+**Unblocks it:** `get_contact(email=…)` / `get_company(domain=…)` on
+`campaign_db`, returning the id. Then step 3 disappears and a touch is one call.
+
+---
+
+## C-B4 — the six reply values in this repo are not the six in the ledger
+
+**Missing:** agreement. B declares `campaign.reply_sentiment` as
+
+    hot_pain, curious, endorse, objection, unrelated, ineligible
+
+and its own comment calls that "the six-value reply taxonomy **already in use by
+the outreach engine**". It is not. `config/reply_taxonomy.yaml` in this repo says
+
+    interested, not_now, not_a_fit, referred, objection, unsubscribe
+
+and is honestly labelled `canonical: false` (see B5 — the real six could not be
+read when it was written). Each batch believed the other owned the list. Only
+`objection` appears in both.
+
+**Blocks:** `sync_replies.py --live` against a real ledger. Every classification
+except `objection` would be rejected.
+
+**Not guessed at, on purpose.** Deciding that `interested` means `hot_pain`
+rather than `curious`, or that `unsubscribe` is `ineligible` rather than
+`unrelated`, changes what every reply-rate number in the Friday brief means.
+That is a call for whoever owns the taxonomy, not for a seam.
+`engine/ledger.py` refuses any value B does not know and names both lists in the
+error.
+
+**Unblocks it:** replace the six ids in `config/reply_taxonomy.yaml` with B's
+six. No Python change — `sync_replies.py` reads the YAML. The keyword patterns
+and `ledger_stage` routing move across with them.

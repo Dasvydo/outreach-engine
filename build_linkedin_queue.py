@@ -185,6 +185,17 @@ def build(markets: list[str], *, contacts_path: Path | None, start: date,
                 replied_at=None,
                 reply_sentiment=None,
                 created_at=now,
+                # Identity, not touch columns. campaign.touches.contact_id is
+                # NOT NULL; engine/ledger.py resolves or creates the contact
+                # from these. A LinkedIn touch resolves on the profile URL,
+                # which is the identifier that survives a job change.
+                company_name=contact.company_name,
+                first_name=contact.first_name,
+                last_name=contact.last_name,
+                linkedin_url=contact.linkedin_url,
+                role=contact.role,
+                segment=contact.segment,
+                country=contact.country,
             )
 
     stamp = start.isoformat()

@@ -46,6 +46,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import yaml  # noqa: E402
 
 from engine import ledger  # noqa: E402
+from engine.contacts import ContactRow, load_contacts  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent
 TAXONOMY_PATH = ROOT / "config" / "reply_taxonomy.yaml"
@@ -139,6 +140,45 @@ def fetch_replies(path: Path | None, *, live: bool) -> list[dict]:
     return payload.get("items", [])
 
 
+def contacts_by_email(path: Path | None) -> dict[str, ContactRow]:
+    """Index the contacts export by lowercased work email.
+
+    Missing or unreadable is not fatal: the classification still prints, and
+    each unmatched reply is named. Losing the whole run because one export is
+    stale would be worse than losing the ledger write for one reply.
+    """
+    try:
+        rows = load_contacts(path)
+    except FileNotFoundError:
+        print(f"NOTE: no contacts export at {path}, replies cannot be matched "
+              f"back to a contact row. Pass --contacts.\n")
+        return {}
+    return {row.work_email.strip().lower(): row for row in rows
+            if row.work_email}
+
+
+def identity(contact: ContactRow | None) -> dict[str, str]:
+    """The fields `engine/ledger.py` needs to resolve a reply to a contact_id.
+
+    Not reply data and not written as touch columns. campaign.touches.contact_id
+    is NOT NULL and campaign_db exposes no reader, so the only way to attach a
+    reply to a person is to be able to name the firm and the person. Empty when
+    the address is not in the export, which makes the ledger write fail loudly
+    with LedgerContactUnresolved rather than inventing a contact.
+    """
+    if contact is None:
+        return {}
+    return {
+        "company_name": contact.company_name,
+        "first_name": contact.first_name,
+        "last_name": contact.last_name,
+        "linkedin_url": contact.linkedin_url,
+        "role": contact.role,
+        "segment": contact.segment,
+        "country": contact.country,
+    }
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="sync_replies")
     parser.add_argument("--replies", type=Path, default=None)
@@ -148,6 +188,9 @@ def main(argv: list[str] | None = None) -> int:
                         help="classify and print, write nothing (default)")
     parser.add_argument("--live", dest="dry_run", action="store_false",
                         help="fetch from Instantly and write to the ledger")
+    parser.add_argument("--contacts", type=Path, default=None,
+                        help="the contacts export a reply is matched back to, "
+                             "so the reply can be tied to a contact row")
     args = parser.parse_args(argv)
 
     taxonomy = load_taxonomy(args.taxonomy)
@@ -162,6 +205,14 @@ def main(argv: list[str] | None = None) -> int:
 
     print(f"{len(replies)} replies, classifier={args.classifier}, "
           f"ledger={ledger.backend_name()}\n")
+
+    # A reply arrives as an address and a body. campaign.touches keys on
+    # contact_id, so the reply has to be matched back to the person it came
+    # from before it can be recorded. The contacts export is the only place
+    # that mapping exists - campaign_db has no contact reader, see BLOCKED.md
+    # B14 - and a reply from an address that is not in it is reported rather
+    # than written under a guessed identity.
+    by_email = contacts_by_email(args.contacts)
 
     counts: dict[str, int] = {}
     written = 0
@@ -186,6 +237,7 @@ def main(argv: list[str] | None = None) -> int:
             ledger_stage=stages[value],
             classifier=args.classifier,
             classifier_note=why,
+            **identity(by_email.get((reply.get("from") or "").strip().lower())),
         )
         if args.dry_run:
             if written == 0:

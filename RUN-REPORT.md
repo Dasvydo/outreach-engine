@@ -537,3 +537,80 @@ Insurance in LT is a closed licensed register of 105 firms, which is the entire
 market rather than a sample, so read its reply rate qualitatively and never
 compare it against accounting's. Expect LT to need hand enumeration from
 rekvizitai.vz.lt to reach parity.
+
+---
+
+## Reconciliation with Batch B's real ledger — 2026-09-03
+
+Batch B's `campaign_db.py` became readable after this batch was finished. This
+repo had been calling its functions by the right names with the wrong arguments,
+and would have raised `TypeError` on the first real connection.
+
+**What was wrong.** `engine/icp_finder.py` sent `company_name=`, `employees_est=`,
+`dev_team_signal=`, `mail_provider=`; B declares `name=`, `est_size=`,
+`has_dev_team=`, `uses_m365=`. `load_instantly.py` and `build_linkedin_queue.py`
+sent a whole `log_touch` payload with no `contact_id` in it at all, and B keys
+`campaign.touches` on `contact_id` with a NOT NULL foreign key. Four company
+fields and four touch fields had no column on B's side. This repo's segment
+`housing_admin` is B's `admin`, its `source` carries a `:market` tag B's enum
+does not allow, and its `fit_score` is a 0.0–1.0 float where B's column is an
+integer with a `0..100` check constraint.
+
+**Why nobody noticed.** The local shim in `engine/ledger.py` accepts any keyword
+argument, so all 103 tests passed and both dry runs printed correctly. A suite
+can only test the contract it was told about, and this one had been told the
+wrong contract by its own fallback.
+
+**What changed.** The translation happens in `engine/ledger.py` and nowhere else.
+The repo keeps its own vocabulary internally — `COMPANY_COLUMNS` and
+`TOUCH_COLUMNS` are unchanged, the finder and the loaders read the same as
+before — and three pure builders (`company_kwargs`, `touch_kwargs`,
+`reply_kwargs`) map it onto B's contract at the boundary. The shim still receives
+the untranslated row, because its job is to be a readable record of what this
+repo meant.
+
+Two derivations are worth naming because they had to match rules that already
+existed elsewhere in the repo:
+
+- `mail_provider` → `uses_m365` uses the MX gate's own test, `provider is
+  Provider.MICROSOFT` and nothing else. `unknown` becomes NULL, not false: it
+  means the lookup failed, which is not the same as "not Microsoft", and B's
+  column is nullable precisely so that stays sayable.
+- `dev_team_signal` → `has_dev_team` uses `icp_finder`'s own rule, `False if
+  score < 0.5 else None`. The gate hard-fails on `True` and a scored guess is not
+  grounds for a hard fail. When the score is too high to say `False`, the number
+  itself is written into `hook_seed` as `dev_signal=0.62` rather than lost.
+
+**Nothing is dropped.** `city`, `team_size`, `stage` and `notes` are folded into
+the `hook_seed` text column; `sequence_id`, `utm_content`, `status`, `market`,
+`company_domain` and `work_email` into `touches.notes`. Both folds are readable
+`key=value` text and both are named as schema gaps in BLOCKED.md C-B1 and C-B2,
+with the `ALTER TABLE` that would close them.
+
+**`log_touch` now supplies a real `contact_id`.** B exposes no reader, so the
+adapter resolves the contact before every touch: an explicit id, else a cached or
+explicit `company_id` plus the email, else `upsert_company` (idempotent on
+domain) followed by `upsert_contact` (idempotent on the LinkedIn URL, else the
+email). The three call sites now pass the identity fields that makes possible —
+they are not new touch columns, and `sync_replies.py` matches each reply back to
+the contacts export by email for the same reason. When a contact genuinely
+cannot be resolved the call raises `LedgerContactUnresolved` naming what was
+missing, rather than writing a touch against a made-up person. BLOCKED.md C-B3.
+
+**One thing is refused rather than guessed.** This repo's six reply values and
+B's six are different lists (BLOCKED.md C-B4). Mapping `interested` onto
+`hot_pain` rather than `curious` would silently change what every reply rate in
+the Friday brief means, so `engine/ledger.py` refuses any value B does not know
+and prints both vocabularies.
+
+**Tests.** 103 before, 129 after. The 26 new ones are in
+`tests/test_ledger_contract.py`, and they do the one thing that would have caught
+this on the day: they load `campaign_db.py` from the campaign-ledger repo **by
+file path** and `inspect.signature(...).bind(...)` the arguments this repo
+builds. Two of them assert the old payloads would *not* have bound, so the
+translation cannot be quietly removed. Two more drive `icp_finder.run_market()`
+and `load_instantly.log_touches()` end to end against a stand-in whose every
+function binds against B's real signature before returning. Nothing connects to
+anything: B's client is built lazily, and none of its functions is ever called,
+only its signature read. The tests skip rather than fail when campaign-ledger is
+not checked out beside this repo.

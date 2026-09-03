@@ -151,7 +151,15 @@ def build_payload(contacts: list[ContactRow], campaign_id: str, hooks: dict) -> 
 
 
 def log_touches(contacts: list[ContactRow], *, dry_run: bool) -> int:
-    """One `campaign.touches` row per contact, step 1, status planned."""
+    """One `campaign.touches` row per contact, step 1, status planned.
+
+    The identity fields below (company_name, the two name parts, linkedin_url,
+    segment, country) are not new vocabulary and are not written as touch
+    columns. They are here because `campaign.touches.contact_id` is NOT NULL on
+    the ledger side and this loader works from domains and email addresses:
+    `engine/ledger.py` uses them to resolve, or create, the contact the touch
+    belongs to. Without them a real ledger has nothing to hang the touch on.
+    """
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
     written = 0
     for contact in contacts:
@@ -169,6 +177,15 @@ def log_touches(contacts: list[ContactRow], *, dry_run: bool) -> int:
             replied_at=None,
             reply_sentiment=None,
             created_at=now,
+            # identity, for contact resolution only
+            company_name=contact.company_name,
+            first_name=contact.first_name,
+            last_name=contact.last_name,
+            linkedin_url=contact.linkedin_url,
+            role=contact.role,
+            segment=contact.segment,
+            country=contact.country,
+            email_source="instantly_finder",
         )
         written += 1
     return written
