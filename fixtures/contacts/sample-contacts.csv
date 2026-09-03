@@ -1,0 +1,13 @@
+company_domain,company_name,first_name,last_name,role,title,work_email,phone,linkedin_url,market,locale,segment,country
+eksempel-revision.dk,Eksempel Revision,Mette,Sorensen,owner_partner,Partner,mette@eksempel-revision.dk,+45 20 00 00 01,https://www.linkedin.com/in/example-mette/,dk,da,accounting,DK
+eksempel-maegler.dk,Eksempel Forsikringsmaegler,Jens,Holm,ops_office_manager,Kontorchef,jens@eksempel-maegler.dk,+45 20 00 00 02,https://www.linkedin.com/in/example-jens/,dk,da,insurance,DK
+eksempel-bolig.dk,Eksempel Boligadministration,Anne,Kristensen,ops_office_manager,Administrationschef,anne@eksempel-bolig.dk,+45 20 00 00 03,https://www.linkedin.com/in/example-anne/,dk,da,housing_admin,DK
+pavyzdys-apskaita.lt,Pavyzdys Apskaita,Rasa,Petraitiene,owner_partner,Vadove,rasa@pavyzdys-apskaita.lt,+370 600 00001,https://www.linkedin.com/in/example-rasa/,lt,lt,accounting,LT
+pavyzdys-draudimas.lt,Pavyzdys Draudimas,Tomas,Jonaitis,ops_office_manager,Biuro vadovas,tomas@pavyzdys-draudimas.lt,+370 600 00002,https://www.linkedin.com/in/example-tomas/,lt,lt,insurance,LT
+pavyzdys-bustas.lt,Pavyzdys Bustas,Egle,Kazlauskiene,other,Administratore,egle@pavyzdys-bustas.lt,+370 600 00003,https://www.linkedin.com/in/example-egle/,lt,lt,housing_admin,LT
+example-accounting.com,Example Accounting Partners,Sarah,Miller,owner_partner,Managing Partner,sarah@example-accounting.com,+1 555 0100,https://www.linkedin.com/in/example-sarah/,global,en,accounting,US
+example-brokers.co.uk,Example Brokers,David,Clarke,ops_office_manager,Operations Manager,david@example-brokers.co.uk,+44 20 7000 0000,https://www.linkedin.com/in/example-david/,global,en,insurance,GB
+example-property.com,Example Property Management,Laura,Bennett,ops_office_manager,Office Manager,laura@example-property.com,+1 555 0101,https://www.linkedin.com/in/example-laura/,global,en,housing_admin,US
+example-boekhouding.nl,Example Boekhouding,Pieter,de Vries,owner_partner,Partner,pieter@example-boekhouding.nl,+31 20 000 0000,https://www.linkedin.com/in/example-pieter/,global,en,accounting,NL
+example-student-housing.co.uk,Example Student Housing,Amira,Khan,other,Head of Residences,amira@example-student-housing.co.uk,+44 161 000 0000,https://www.linkedin.com/in/example-amira/,global,en,housing_admin,GB
+sneaky-mislabelled.dk,Mislabelled Danish Firm,Lars,Nielsen,owner_partner,Partner,lars@sneaky-mislabelled.dk,+45 20 00 00 04,https://www.linkedin.com/in/example-lars/,global,en,accounting,DK

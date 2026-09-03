@@ -262,6 +262,19 @@ def get_content_perf(*args: Any, **kwargs: Any):
     return _dispatch("get_content_perf", *args, **kwargs)
 
 
+def use_shim_dir(directory) -> None:
+    """Point the shim at a different directory. Tests only.
+
+    Lets a test get a clean, isolated ledger without touching the one the real
+    runs write to, which is what makes the dedup test meaningful instead of
+    order-dependent.
+    """
+    global _shim
+    if using_real_ledger():
+        raise RuntimeError("use_shim_dir() must never run against the real ledger")
+    _shim = _Shim(Path(directory))
+
+
 def reset_shim() -> None:
     """Wipe the shim's local state. Tests only. No effect on a real ledger."""
     if using_real_ledger():

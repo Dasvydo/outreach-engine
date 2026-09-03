@@ -97,3 +97,102 @@ separate domain per sending identity, no more than three mailboxes per domain,
 warm before sending, verify every address twice (bounce rate under 1%), and
 rotate a domain out the moment it degrades. Volume is not the constraint —
 domain reputation is.
+
+---
+
+# Campaign layer: DoviLoop Teams, 8 September to 19 October 2026
+
+Everything above this line is the original engine and still works unchanged. The
+sections below are the campaign build (Batch C) that sits on top of it.
+
+Read `AUDIT.md` for what was found before any of this was written, `BLOCKED.md`
+for what was missing and what it blocks, and `RUN-REPORT.md` for what Dovy has
+to do himself.
+
+## Timing. Read this before planning anything
+
+**Email cannot start before roughly 22 September 2026.** Instantly needs its own
+sending domains and two to three weeks of mailbox warmup before a single message
+is safe to send. Buying the domains on 8 September does not buy you 8 September.
+
+**LinkedIn and phone start 8 September in all three markets.** Neither needs
+warmup and neither is waiting on a purchase.
+
+So the A/B reads like this:
+
+| Weeks | Dates | What is running |
+|---|---|---|
+| 1 to 2 | 8 Sept to 21 Sept | LinkedIn across dk, lt and global. Phone in dk. Three markets, one channel, and that is the comparison. |
+| 3 onward | 22 Sept to 19 Oct | Email joins, `global` only. Now it is three markets on LinkedIn plus one market on two channels. |
+
+Two consequences that are easy to miss later:
+
+1. **Weeks 1 and 2 are the clean market comparison.** One channel, three
+   markets. Once email starts, `global` has two channels and its numbers stop
+   being comparable to dk and lt on volume alone. Read per channel from week 3,
+   using Batch B's `get_channel_funnel`.
+2. **Denmark never gets email at all**, so dk versus global is never a
+   like-for-like channel comparison. It is a market comparison run on the
+   channels each market actually allows.
+
+## Denmark does not get cold email
+
+Danish marketing law is stricter than the rest of the EU on unsolicited
+commercial email. Until Dovy confirms otherwise in writing, no Danish address
+enters Instantly.
+
+This is enforced in `load_instantly.py` as a filter that runs before the payload
+is built, on four independent signals (market, country, a .dk email domain, a
++45 phone number), with no flag to switch it off. `tests/test_danish_exclusion.py`
+fails the build if anyone weakens it. Denmark runs on LinkedIn and phone, and
+`sequences/phone/da.md` is the script that replaces the email.
+
+## What was added
+
+```
+config/queries/{dk,lt,global}.yaml   search queries, editable without code
+config/hooks.yaml                    segment openers, 3 segments x 3 locales
+config/reply_taxonomy.yaml           six reply values, reconstructed
+engine/icp_finder.py                 search -> MX gate -> dedup -> dated CSV
+engine/signals.py                    dev-team and size soft signals
+engine/ledger.py                     the campaign_db.py seam
+engine/contacts.py                   reading contacts back out
+sequences/linkedin/{en,da,lt}.md     four steps, 20 connects a day
+sequences/email/en.md                four touches, global only
+sequences/phone/{da,en,lt}.md        opener plus the three brush offs
+load_instantly.py                    global only, Danish addresses excluded
+build_linkedin_queue.py              20 a day, shared across markets
+sync_replies.py                      classify replies, write them back
+lists/{market}-YYYY-MM-DD.csv        the dated market lists
+fixtures/                            stand-ins for the absent API keys
+```
+
+## Campaign commands
+
+```bash
+pip install -r requirements.txt
+
+# discovery, all three markets, reading each company's own public site
+python3 -m engine.icp_finder --all --probe
+
+# deterministic version, no site fetches, used by the tests
+python3 -m engine.icp_finder --market dk --no-probe
+
+# loaders. Both default to a dry run and send nothing.
+python3 load_instantly.py --dry-run
+python3 build_linkedin_queue.py --all --dry-run
+python3 sync_replies.py --dry-run
+
+python3 -m pytest -q
+```
+
+## The campaign offer, which is not the offer in docs/ICP-BRIEF.md
+
+The campaign prices at **$89 per seat per month plus a $500 setup fee** covering
+the workshop, onboarding and setup, for teams of 10 and up, with a free two week
+pilot and billing starting on day 14.
+
+`docs/ICP-BRIEF.md` still says $49 and $99 a seat with $750 onboarding. The two
+disagree. The campaign brief is dated later and all campaign copy follows it.
+The locked brief was deliberately left untouched because `reel-engine` and
+`ad-engine` share it. See `BLOCKED.md` B8, and reconcile it once.

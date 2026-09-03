@@ -1,0 +1,19 @@
+{
+  "note": "Synthetic replies, written by hand to exercise all six taxonomy values plus the fallback. No real prospect wrote any of these. Addresses match fixtures/contacts/sample-contacts.csv.",
+  "replies": [
+    {"from": "sarah@example-accounting.com", "company_domain": "example-accounting.com", "market": "global", "step": 1, "received_at": "2026-09-24T09:12:00Z",
+     "body": "This sounds good, can you send the link and a couple of times next week?"},
+    {"from": "david@example-brokers.co.uk", "company_domain": "example-brokers.co.uk", "market": "global", "step": 2, "received_at": "2026-09-25T14:03:00Z",
+     "body": "Not right now, we are in the middle of renewals. Circle back after the quarter."},
+    {"from": "laura@example-property.com", "company_domain": "example-property.com", "market": "global", "step": 1, "received_at": "2026-09-25T16:40:00Z",
+     "body": "Please unsubscribe me from this list."},
+    {"from": "pieter@example-boekhouding.nl", "company_domain": "example-boekhouding.nl", "market": "global", "step": 3, "received_at": "2026-09-26T08:55:00Z",
+     "body": "I am not the right person, copying our office manager who handles this."},
+    {"from": "amira@example-student-housing.co.uk", "company_domain": "example-student-housing.co.uk", "market": "global", "step": 2, "received_at": "2026-09-26T11:20:00Z",
+     "body": "Where is the data stored? We cannot use anything hosted outside the EU."},
+    {"from": "ops@example-tiny.com", "company_domain": "example-tiny.com", "market": "global", "step": 1, "received_at": "2026-09-26T12:00:00Z",
+     "body": "We are only three people and we use Gmail, so this is not a fit."},
+    {"from": "info@example-quiet.com", "company_domain": "example-quiet.com", "market": "global", "step": 4, "received_at": "2026-09-27T07:30:00Z",
+     "body": "Thanks for reaching out."}
+  ]
+}

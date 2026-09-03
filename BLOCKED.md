@@ -238,3 +238,43 @@ LT candidates were rejected by the MX gate, one of them Google Workspace.
 
 **Unblocks it:** the search key. The finder already loops queries, pages and
 country hints, so volume is a quota question, not a code one.
+
+---
+
+## B14 — `campaign_db.py` has no way to read contacts back
+
+**Missing:** a reader. Batch B's eleven functions are eight writes
+(`upsert_company`, `upsert_contact`, `log_touch`, `record_reply`, `insert_lead`,
+`upsert_content`, `snapshot_content_stats`, `snapshot_ad_stats`) and three
+aggregate reads (`get_market_funnel`, `get_channel_funnel`, `get_content_perf`).
+None of them returns a list of contacts.
+
+**Blocks:** the spec's "reads contacts from the ledger where `market = 'global'`"
+in `load_instantly.py`, and the same in `build_linkedin_queue.py`. There is no
+function to ask.
+
+**Workaround shipped:** `engine/contacts.py` reads a CSV export, and both loaders
+take `--contacts`. It defaults to `fixtures/contacts/sample-contacts.csv` so the
+dry runs and tests work today.
+
+**Unblocks it:** either Batch B adds a `get_contacts(market=...)`, or Dovy
+exports `campaign.contacts` to CSV before each load. Swapping to a real reader is
+one function in `engine/contacts.py`.
+
+---
+
+## B15 — No contacts exist yet, only companies
+
+**Missing:** named people with work emails and LinkedIn URLs. This batch is
+restricted to company-level public data and explicitly forbidden from LinkedIn
+scraping, so it found 41 companies and zero contacts.
+
+**Blocks:** actually running either loader on real data. Both were run on the
+synthetic fixture instead.
+
+**Not a defect.** Contact discovery is the DSD pipeline's job and it was kept out
+of this batch on purpose.
+
+**Unblocks it:** run the existing DSD pipeline over `lists/*.csv`, or find the
+contacts by hand. At 41 companies, by hand is a couple of hours and produces
+better role targeting than a scraper would.
