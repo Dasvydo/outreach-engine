@@ -1,6 +1,6 @@
 # RUN-REPORT: Batch C, `outreach-engine`
 
-Branch `campaign/c-outreach`. Six local commits. **Nothing pushed.**
+Branch `campaign/c-outreach`. All work committed locally. **Nothing pushed.**
 Run unattended 2026-09-03. Nothing was sent, published or charged.
 
 Read `AUDIT.md` first if you want to know what was already here. Read
@@ -187,7 +187,7 @@ independent places, `00-START-HERE.md` and your real August drafts in Drive.
 
 ### Branch `campaign/c-outreach`, nothing pushed
 
-**PASS.** Six commits on `campaign/c-outreach`, `git push` never run. No secret
+**PASS.** All work is committed on `campaign/c-outreach` and `git push` was never run. No secret
 value is written into any committed file; `.env.example` has empty values only.
 
 ---
