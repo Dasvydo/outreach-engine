@@ -1,1 +1,4 @@
+# pytest is a dev dependency, installed separately: pip install pytest
 dnspython>=2.6
+PyYAML>=6.0
+
