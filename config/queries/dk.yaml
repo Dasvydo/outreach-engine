@@ -1,0 +1,62 @@
+# Denmark. Edit the queries here, not the code.
+#
+# Channels for this market are LinkedIn and phone. No cold email: Danish
+# marketing law is stricter than the rest of the EU on unsolicited commercial
+# email, so dk contacts never reach the Instantly loader. See load_instantly.py.
+
+market: dk
+locale: da
+country_codes: [DK]
+
+search:
+  # Google Custom Search parameters. gl biases results to the country,
+  # lr restricts by document language, cr restricts by country of origin.
+  gl: dk
+  lr: lang_da
+  cr: countryDK
+  results_per_query: 10
+  pages_per_query: 5          # 5 pages x 10 = up to 50 results per query
+  # Domains that are directories, marketplaces or portals, never the firm
+  # itself. A hit on one of these is noise and is dropped before the MX gate.
+  exclude_domains:
+    - proff.dk
+    - krak.dk
+    - degulesider.dk
+    - virk.dk
+    - datacvr.virk.dk
+    - cvrapi.dk
+    - linkedin.com
+    - facebook.com
+    - jobindex.dk
+    - trustpilot.com
+    - wikipedia.org
+
+segments:
+  - id: accounting
+    label: Revision og bogholderi
+    nace: "69.20"
+    queries:
+      - revisionsfirma statsautoriseret revisor kunder
+      - registreret revisor bogholderi virksomheder
+      - revisionshus årsregnskab selvangivelse kunder
+      - bogholderi outsourcing lønadministration virksomhed
+      - revisor rådgivning små og mellemstore virksomheder
+
+  - id: insurance
+    label: Forsikringsmæglere
+    nace: "66.22"
+    queries:
+      - forsikringsmægler erhverv uafhængig rådgivning
+      - forsikringsmæglerselskab virksomhedsforsikring
+      - forsikringsmægler pension sundhedsforsikring erhverv
+      - assurandør mæglerhus erhvervskunder
+
+  - id: housing_admin
+    label: Bolig- og ejendomsadministration
+    nace: "68.32"
+    queries:
+      - ejendomsadministration andelsboligforening administrator
+      - boligforening administration beboere udlejning
+      - administrator ejerforening vicevært regnskab
+      - kollegier administration boliger studerende
+      - boligadministration lejere flytteopgørelse

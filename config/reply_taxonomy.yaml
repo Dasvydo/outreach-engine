@@ -1,0 +1,75 @@
+# Reply classification vocabulary for sync_replies.py.
+#
+# RECONSTRUCTED, NOT CANONICAL. The spec says to reuse the DSD discovery
+# pipeline's six-value taxonomy. That pipeline is not present in this container
+# and the spec never enumerates the six values, so these six were defined here
+# instead and are honestly labelled as this batch's invention. See BLOCKED.md B5.
+#
+# When the real six arrive, edit this file only. sync_replies.py reads the YAML
+# and needs no Python change.
+
+version: reconstructed-2026-09-03
+canonical: false
+
+values:
+  - id: interested
+    meaning: Wants to talk, asks for a time, asks for the link or the price.
+    ledger_stage: qualified
+    next_action: Book the discovery call within one working day.
+
+  - id: not_now
+    meaning: Positive but timing is wrong. Busy season, budget frozen, ask again later.
+    ledger_stage: nurture
+    next_action: Snooze 90 days, keep in the ledger, do not re-sequence before then.
+
+  - id: not_a_fit
+    meaning: Wrong ICP. Too small, no Microsoft 365, in-house developers, wrong industry.
+    ledger_stage: disqualified
+    next_action: Mark the company disqualified so discovery stops resurfacing it.
+
+  - id: referred
+    meaning: Passing us to someone else, usually the office manager or IT.
+    ledger_stage: qualified
+    next_action: Create the referred contact, restart at step 1, credit the referrer.
+
+  - id: objection
+    meaning: Engaged but pushing back. Price, data location, AI writing to clients, security.
+    ledger_stage: engaged
+    next_action: Human reply, never an automated one. Log which objection for the ad teardown.
+
+  - id: unsubscribe
+    meaning: Stop contacting. Includes hostile replies and any legal or GDPR request.
+    ledger_stage: suppressed
+    next_action: Suppress immediately and permanently, across every channel and market.
+
+# Deterministic keyword classifier. Needs no API key and no network, which is
+# why it is the default. Checked in order, first list to hit wins, so
+# unsubscribe sits first and beats a polite "no thanks, remove me".
+keywords:
+  unsubscribe:
+    en: [unsubscribe, remove me, take me off, stop emailing, do not contact, gdpr, opt out]
+    da: [afmeld, frameld, fjern mig, stop med at skrive, kontakt mig ikke]
+    lt: [atsisakau, isbraukite, nerasykite, nesusisiekite, atsisakyti prenumeratos]
+  interested:
+    en: [interested, sounds good, book a, send the link, calendar, happy to chat, tell me more, what does it cost, pricing]
+    da: [interesseret, lyder godt, send linket, book, kalender, hvad koster, fortael mere]
+    lt: [idomu, skamba gerai, atsiuskite nuoroda, kalendorius, kiek kainuoja, papasakokite daugiau]
+  referred:
+    en: [copying, cc, speak to, best person, forwarded, my colleague, our office manager, reach out to]
+    da: [sender videre, tal med, rette person, min kollega, kontorchef]
+    lt: [persiunciu, kreipkites i, tinkamas zmogus, mano kolega, biuro vadove]
+  not_now:
+    en: [not right now, later, busy season, next quarter, next year, circle back, budget, after the]
+    da: [ikke lige nu, senere, travl, naeste kvartal, naeste aar, vend tilbage, budget]
+    lt: [ne dabar, veliau, uzimtas, kita ketvirti, kitais metais, susisiekite veliau, biudzetas]
+  objection:
+    en: [too expensive, where is the data, gdpr compliant, security, we already use, not sure about ai, who else uses]
+    da: [for dyrt, hvor ligger data, sikkerhed, vi bruger allerede, ikke sikker paa ai, hvem bruger]
+    lt: [per brangu, kur saugomi duomenys, saugumas, jau naudojame, nesu tikras del dirbtinio, kas dar naudoja]
+  not_a_fit:
+    en: [not a fit, we are only, we use gmail, we have our own, in-house, too small, wrong person]
+    da: [ikke relevant, vi er kun, vi bruger gmail, vi har vores eget, for smaa, forkert person]
+    lt: [netinka, mes tik, naudojame gmail, turime savo, per mazi, ne tas zmogus]
+
+# Nothing matched. Never guessed, always surfaced to a human.
+fallback: objection

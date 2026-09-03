@@ -1,0 +1,59 @@
+# Lithuania. Edit the queries here, not the code.
+#
+# Lithuania has no open company registry API, which is why this market is
+# discovered by search plus the MX gate rather than from a register. See
+# engine/registry.py::lt_sources() for the real routes, and BLOCKED.md B11.
+#
+# Insurance in LT is a closed licensed register of 105 intermediaries. That is
+# the entire market, not a sample. Read its results qualitatively and do not
+# compare its reply rate against accounting's.
+
+market: lt
+locale: lt
+country_codes: [LT]
+
+search:
+  gl: lt
+  lr: lang_lt
+  cr: countryLT
+  results_per_query: 10
+  pages_per_query: 5
+  exclude_domains:
+    - rekvizitai.vz.lt
+    - imones.lt
+    - visasverslas.lt
+    - registrucentras.lt
+    - linkedin.com
+    - facebook.com
+    - cvbankas.lt
+    - wikipedia.org
+
+segments:
+  - id: accounting
+    label: Buhalterinės paslaugos
+    nace: "69.20"
+    queries:
+      - buhalterinės paslaugos įmonėms apskaita
+      - apskaitos paslaugos užsakomoji buhalterija
+      - buhalterinė apskaita darbo užmokesčio administravimas
+      - finansinė apskaita metinė ataskaita įmonėms
+      - buhalterinės paslaugos Vilnius Kaunas Klaipėda
+
+  - id: insurance
+    label: Draudimo brokeriai
+    nace: "66.22"
+    queries:
+      - draudimo brokeriai įmonių draudimas
+      - draudimo brokerių bendrovė verslo draudimas
+      - nepriklausomas draudimo tarpininkas įmonėms
+      - draudimo konsultacijos verslo klientams
+
+  - id: housing_admin
+    label: Būsto administravimas
+    nace: "68.32"
+    queries:
+      - būsto administravimas daugiabučių priežiūra
+      - namų bendrijos administravimas paslaugos
+      - pastatų administravimas nuomininkai apskaita
+      - bendrabučiai administravimas studentų apgyvendinimas
+      - daugiabučių namų administratorius paslaugos

@@ -4,3 +4,6 @@ __pycache__/
 queue/*.csv
 queue/leads-*.json
 .env
+.ledger-shim/
+lists/*.tmp
+.pytest_cache/

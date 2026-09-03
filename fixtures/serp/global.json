@@ -1,0 +1,218 @@
+{
+  "market": "global",
+  "recorded": "2026-09-03",
+  "source": "hand-built stand-in, not a captured API response",
+  "note": "Recorded-shape stand-in for the Google Custom Search response. There is no GOOGLE_API_KEY in this session (BLOCKED.md B3), so discovery runs against this instead of the live API. The code path after the fetch is identical.\nWHAT IS REAL: every domain below is a real company domain in the right country and segment, and every one is put through a real live MX lookup at run time, so the hard Microsoft 365 gate is genuinely exercised and genuinely rejects.\nWHAT IS NOT: 'title' is a display name. Where name_source is 'drive' it was read from the real leads_2026-08-18.csv in the DoviLoop Ops Drive folder. Where it is 'derived' it was reconstructed from the domain and is NOT a verified legal name. 'snippet' is empty on purpose rather than invented; the real snippet text comes from the live probe of the company's own public site.",
+  "responses": [
+    {
+      "query": "accounting firm bookkeeping services for small business clients",
+      "segment": "accounting",
+      "country": "NL",
+      "items": [
+        {
+          "title": "ABAB Accountants",
+          "link": "https://abab.nl/",
+          "displayLink": "abab.nl",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "Van Diepen accountants",
+          "link": "https://dvan.nl/",
+          "displayLink": "dvan.nl",
+          "snippet": "",
+          "name_source": "derived"
+        }
+      ]
+    },
+    {
+      "query": "accounting firm bookkeeping services for small business clients",
+      "segment": "accounting",
+      "country": "GB",
+      "items": [
+        {
+          "title": "Azets UK",
+          "link": "https://azets.co.uk/",
+          "displayLink": "azets.co.uk",
+          "snippet": "",
+          "name_source": "derived"
+        }
+      ]
+    },
+    {
+      "query": "accounting firm bookkeeping services for small business clients",
+      "segment": "accounting",
+      "country": "IE",
+      "items": [
+        {
+          "title": "Crowe Ireland",
+          "link": "https://crowe.ie/",
+          "displayLink": "crowe.ie",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "ifac",
+          "link": "https://ifac.ie/",
+          "displayLink": "ifac.ie",
+          "snippet": "",
+          "name_source": "derived"
+        }
+      ]
+    },
+    {
+      "query": "independent insurance broker commercial lines clients",
+      "segment": "insurance",
+      "country": "US",
+      "items": [
+        {
+          "title": "CoverLink Insurance",
+          "link": "https://coverlink.com/",
+          "displayLink": "coverlink.com",
+          "snippet": "",
+          "name_source": "drive"
+        },
+        {
+          "title": "Hofmeister Insurance Agency",
+          "link": "https://hofmeisterinsuranceagency.com/",
+          "displayLink": "hofmeisterinsuranceagency.com",
+          "snippet": "",
+          "name_source": "drive"
+        },
+        {
+          "title": "Insurance Group of Wisconsin",
+          "link": "https://insurancegroupwi.com/",
+          "displayLink": "insurancegroupwi.com",
+          "snippet": "",
+          "name_source": "drive"
+        },
+        {
+          "title": "Arthur J. Gallagher",
+          "link": "https://gallagher.com/",
+          "displayLink": "gallagher.com",
+          "snippet": "",
+          "name_source": "derived"
+        }
+      ]
+    },
+    {
+      "query": "independent insurance broker commercial lines clients",
+      "segment": "insurance",
+      "country": "GB",
+      "items": [
+        {
+          "title": "Arthur J. Gallagher UK",
+          "link": "https://ajg.co.uk/",
+          "displayLink": "ajg.co.uk",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "Howden Group",
+          "link": "https://howdengroup.com/",
+          "displayLink": "howdengroup.com",
+          "snippet": "",
+          "name_source": "derived"
+        }
+      ]
+    },
+    {
+      "query": "property management company HOA community association",
+      "segment": "housing_admin",
+      "country": "US",
+      "items": [
+        {
+          "title": "IPM Association Services",
+          "link": "https://ipmhoa.com/",
+          "displayLink": "ipmhoa.com",
+          "snippet": "",
+          "name_source": "drive"
+        },
+        {
+          "title": "NRP Management",
+          "link": "https://nrp.management/",
+          "displayLink": "nrp.management",
+          "snippet": "",
+          "name_source": "drive"
+        },
+        {
+          "title": "Community Association Management",
+          "link": "https://communityassociationmanagement.com/",
+          "displayLink": "communityassociationmanagement.com",
+          "snippet": "",
+          "name_source": "drive"
+        },
+        {
+          "title": "Capitol Companies",
+          "link": "https://capitolcorp.com/",
+          "displayLink": "capitolcorp.com",
+          "snippet": "",
+          "name_source": "drive"
+        },
+        {
+          "title": "City Roots Properties",
+          "link": "https://cityrootsproperties.com/",
+          "displayLink": "cityrootsproperties.com",
+          "snippet": "",
+          "name_source": "drive"
+        },
+        {
+          "title": "Associa",
+          "link": "https://associa.us/",
+          "displayLink": "associa.us",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "FirstService Residential",
+          "link": "https://fsresidential.com/",
+          "displayLink": "fsresidential.com",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "RealManage",
+          "link": "https://realmanage.com/",
+          "displayLink": "realmanage.com",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "Action Property Management",
+          "link": "https://actionlife.com/",
+          "displayLink": "actionlife.com",
+          "snippet": "",
+          "name_source": "derived"
+        }
+      ]
+    },
+    {
+      "query": "property management company HOA community association",
+      "segment": "housing_admin",
+      "country": "GB",
+      "items": [
+        {
+          "title": "Collegiate AC",
+          "link": "https://collegiate-ac.com/",
+          "displayLink": "collegiate-ac.com",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "Student Castle",
+          "link": "https://studentcastle.co.uk/",
+          "displayLink": "studentcastle.co.uk",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "UniHomes",
+          "link": "https://unihomes.co.uk/",
+          "displayLink": "unihomes.co.uk",
+          "snippet": "",
+          "name_source": "derived"
+        }
+      ]
+    }
+  ]
+}

@@ -30,6 +30,12 @@ _SIGNATURES: tuple[tuple[str, Provider], ...] = (
     ("outlook.com", Provider.MICROSOFT),          # *.mail.protection.outlook.com
     ("protection.outlook", Provider.MICROSOFT),
     ("microsoft.com", Provider.MICROSOFT),
+    # Newer Exchange Online endpoint, e.g. redmark-dk.r-v1.mx.microsoft and
+    # vbtm-nl.x-v1.mx.microsoft. Added 2026-09-03: both were sitting in the
+    # campaign's own DK and NL candidate lists and were being classified OTHER,
+    # so real Microsoft 365 firms were failing the hard gate. Found by probing
+    # 84 real ICP domains, not by reading docs.
+    (".mx.microsoft", Provider.MICROSOFT),
     ("google.com", Provider.GOOGLE),              # aspmx.l.google.com
     ("googlemail.com", Provider.GOOGLE),
     ("psmtp.com", Provider.GOOGLE),

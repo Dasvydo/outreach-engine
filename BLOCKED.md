@@ -197,3 +197,44 @@ licensed register of 105 firms, which is the entire market, not a sample.
 
 **Unblocks it:** manual enumeration from rekvizitai.vz.lt, or a paid data source.
 Not a code problem.
+
+---
+
+## B12 — The ledger column lists were not in the spec
+
+**Missing:** the column lists for `campaign.companies`, `campaign.contacts` and
+`campaign.touches`. The batch instructions said they are in the Batch C spec.
+They are not. `C-outreach-engine.md` names all three tables and never enumerates
+a column, and this session was restricted to `00-START-HERE.md` and
+`C-outreach-engine.md`, so `B-ledger.md` could not be read either.
+
+**Blocks:** writing rows whose column names are certain to match Batch B's schema.
+
+**Workaround shipped:** the three lists are defined once, in
+`engine/ledger.py` as `COMPANY_COLUMNS`, `CONTACT_COLUMNS` and `TOUCH_COLUMNS`,
+derived from what the specs do state: the shared qualifier payload contract and
+its exact enum values (`market`, `locale`, `team_size`, `email_client`, `role`),
+the two column names the Batch C spec gives outright for `campaign.touches`
+(`replied_at`, `reply_sentiment`), and the gates this repo already encodes.
+
+**Unblocks it:** Dovy diffs those three tuples against Batch B's migration and
+fixes any name that differs. One file, about 5 minutes. Nothing downstream reads
+column names directly.
+
+---
+
+## B13 — Under the 100+ companies per market target
+
+**Missing:** live search. Consequence of B3, recorded separately because it is a
+number in the QA gate.
+
+**Where the run landed:** dk 17, lt 7, global 17. Forty one companies, not three
+hundred. Every one is a real domain that passed a real live Microsoft 365 MX
+lookup, and every one had its own public site read for the size and dev-team
+signals, so the rows are real. There are just not enough of them.
+
+**Why lt is thinnest:** no open Lithuanian registry (B11), and four of the twelve
+LT candidates were rejected by the MX gate, one of them Google Workspace.
+
+**Unblocks it:** the search key. The finder already loops queries, pages and
+country hints, so volume is a quota question, not a code one.

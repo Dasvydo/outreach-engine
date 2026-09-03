@@ -1,0 +1,63 @@
+# US, UK, IE and NL. Edit the queries here, not the code.
+#
+# This is the only market that gets cold email, via Instantly, and it starts
+# around 22 September because the sending domains need 2 to 3 weeks of warmup.
+# LinkedIn for this market starts 8 September like everywhere else.
+
+market: global
+locale: en
+country_codes: [US, GB, IE, NL]
+
+search:
+  gl: us
+  lr: lang_en
+  cr: null                    # four countries, so no single-country restrict
+  results_per_query: 10
+  pages_per_query: 5
+  exclude_domains:
+    - linkedin.com
+    - facebook.com
+    - indeed.com
+    - glassdoor.com
+    - yelp.com
+    - clutch.co
+    - crunchbase.com
+    - wikipedia.org
+    - bbb.org
+    - thumbtack.com
+
+  # Run each query once per country hint so one market does not become
+  # all-US. The finder appends these to the query string.
+  country_hints:
+    US: ""
+    GB: "United Kingdom"
+    IE: "Ireland"
+    NL: "Netherlands"
+
+segments:
+  - id: accounting
+    label: Accounting firms
+    nace: "69.20"
+    queries:
+      - accounting firm bookkeeping services for small business clients
+      - CPA firm tax preparation client portal
+      - outsourced bookkeeping and payroll services firm
+      - chartered accountants year end accounts clients
+
+  - id: insurance
+    label: Insurance brokers
+    nace: "66.22"
+    queries:
+      - independent insurance broker commercial lines clients
+      - insurance brokerage business insurance renewals
+      - insurance agency multiple carriers quoting clients
+      - commercial insurance broker claims support
+
+  - id: housing_admin
+    label: Property and student housing administration
+    nace: "68.32"
+    queries:
+      - property management company HOA community association
+      - residential property management tenants leasing office
+      - student housing management purpose built accommodation
+      - facilities and building administration services company

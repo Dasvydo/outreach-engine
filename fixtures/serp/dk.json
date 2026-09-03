@@ -1,0 +1,197 @@
+{
+  "market": "dk",
+  "recorded": "2026-09-03",
+  "source": "hand-built stand-in, not a captured API response",
+  "note": "Recorded-shape stand-in for the Google Custom Search response. There is no GOOGLE_API_KEY in this session (BLOCKED.md B3), so discovery runs against this instead of the live API. The code path after the fetch is identical.\nWHAT IS REAL: every domain below is a real company domain in the right country and segment, and every one is put through a real live MX lookup at run time, so the hard Microsoft 365 gate is genuinely exercised and genuinely rejects.\nWHAT IS NOT: 'title' is a display name. Where name_source is 'drive' it was read from the real leads_2026-08-18.csv in the DoviLoop Ops Drive folder. Where it is 'derived' it was reconstructed from the domain and is NOT a verified legal name. 'snippet' is empty on purpose rather than invented; the real snippet text comes from the live probe of the company's own public site.",
+  "responses": [
+    {
+      "query": "revisionsfirma statsautoriseret revisor kunder",
+      "segment": "accounting",
+      "country": "DK",
+      "items": [
+        {
+          "title": "Addere Revision",
+          "link": "https://addere.dk/",
+          "displayLink": "addere.dk",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "Baker Tilly Denmark",
+          "link": "https://bakertilly.dk/",
+          "displayLink": "bakertilly.dk",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "GSL Revision",
+          "link": "https://gsl.dk/",
+          "displayLink": "gsl.dk",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "Inforevision",
+          "link": "https://inforevision.dk/",
+          "displayLink": "inforevision.dk",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "Martinsen Revision",
+          "link": "https://martinsen.dk/",
+          "displayLink": "martinsen.dk",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "Roesgaard",
+          "link": "https://roesgaard.dk/",
+          "displayLink": "roesgaard.dk",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "SR Revision",
+          "link": "https://sr-revision.dk/",
+          "displayLink": "sr-revision.dk",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "Redmark",
+          "link": "https://redmark.dk/",
+          "displayLink": "redmark.dk",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "Beierholm",
+          "link": "https://beierholm.dk/",
+          "displayLink": "beierholm.dk",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "Revisorgruppen Danmark",
+          "link": "https://ri.dk/",
+          "displayLink": "ri.dk",
+          "snippet": "",
+          "name_source": "derived"
+        }
+      ]
+    },
+    {
+      "query": "forsikringsmægler erhverv uafhængig rådgivning",
+      "segment": "insurance",
+      "country": "DK",
+      "items": [
+        {
+          "title": "Danske Forsikringsmaeglere Erhverv",
+          "link": "https://dkfm.dk/",
+          "displayLink": "dkfm.dk",
+          "snippet": "",
+          "name_source": "drive"
+        },
+        {
+          "title": "Cowins Forsikringsmaegler",
+          "link": "https://cowins.dk/",
+          "displayLink": "cowins.dk",
+          "snippet": "",
+          "name_source": "drive"
+        },
+        {
+          "title": "Aon Denmark",
+          "link": "https://aon.dk/",
+          "displayLink": "aon.dk",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "Soderberg & Partners",
+          "link": "https://soderberg.dk/",
+          "displayLink": "soderberg.dk",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "Willis Towers Watson Denmark",
+          "link": "https://willis.dk/",
+          "displayLink": "willis.dk",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "Contea Forsikringsmaegler",
+          "link": "https://contea.dk/",
+          "displayLink": "contea.dk",
+          "snippet": "",
+          "name_source": "derived"
+        }
+      ]
+    },
+    {
+      "query": "ejendomsadministration andelsboligforening administrator",
+      "segment": "housing_admin",
+      "country": "DK",
+      "items": [
+        {
+          "title": "DACAS Dansk Administrationscenter",
+          "link": "https://dacas.dk/",
+          "displayLink": "dacas.dk",
+          "snippet": "",
+          "name_source": "drive"
+        },
+        {
+          "title": "Real Administration",
+          "link": "https://realadmin.dk/",
+          "displayLink": "realadmin.dk",
+          "snippet": "",
+          "name_source": "drive"
+        },
+        {
+          "title": "Datea",
+          "link": "https://datea.dk/",
+          "displayLink": "datea.dk",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "DEAS",
+          "link": "https://deas.dk/",
+          "displayLink": "deas.dk",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "KAB",
+          "link": "https://kab-bolig.dk/",
+          "displayLink": "kab-bolig.dk",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "Newsec Denmark",
+          "link": "https://newsec.dk/",
+          "displayLink": "newsec.dk",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "Boligkontoret Danmark",
+          "link": "https://boligkontoret.dk/",
+          "displayLink": "boligkontoret.dk",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "FA09 Ejendomsadministration",
+          "link": "https://fa09.dk/",
+          "displayLink": "fa09.dk",
+          "snippet": "",
+          "name_source": "derived"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "market": "lt",
+  "recorded": "2026-09-03",
+  "source": "hand-built stand-in, not a captured API response",
+  "note": "Recorded-shape stand-in for the Google Custom Search response. There is no GOOGLE_API_KEY in this session (BLOCKED.md B3), so discovery runs against this instead of the live API. The code path after the fetch is identical.\nWHAT IS REAL: every domain below is a real company domain in the right country and segment, and every one is put through a real live MX lookup at run time, so the hard Microsoft 365 gate is genuinely exercised and genuinely rejects.\nWHAT IS NOT: 'title' is a display name. Where name_source is 'drive' it was read from the real leads_2026-08-18.csv in the DoviLoop Ops Drive folder. Where it is 'derived' it was reconstructed from the domain and is NOT a verified legal name. 'snippet' is empty on purpose rather than invented; the real snippet text comes from the live probe of the company's own public site.",
+  "responses": [
+    {
+      "query": "buhalterinės paslaugos įmonėms apskaita",
+      "segment": "accounting",
+      "country": "LT",
+      "items": [
+        {
+          "title": "Apskaitos biuras",
+          "link": "https://apskaitosbiuras.lt/",
+          "displayLink": "apskaitosbiuras.lt",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "UAB Buhalterija",
+          "link": "https://uabbuhalterija.lt/",
+          "displayLink": "uabbuhalterija.lt",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "Buhalterija",
+          "link": "https://buhalterija.lt/",
+          "displayLink": "buhalterija.lt",
+          "snippet": "",
+          "name_source": "derived"
+        }
+      ]
+    },
+    {
+      "query": "draudimo brokeriai įmonių draudimas",
+      "segment": "insurance",
+      "country": "LT",
+      "items": [
+        {
+          "title": "Aon Baltic",
+          "link": "https://aon.lt/",
+          "displayLink": "aon.lt",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "Colemont draudimo brokeris",
+          "link": "https://colemont.lt/",
+          "displayLink": "colemont.lt",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "Gjensidige Lietuva",
+          "link": "https://gjensidige.lt/",
+          "displayLink": "gjensidige.lt",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "Draudimo brokeriai",
+          "link": "https://draudimobrokeriai.lt/",
+          "displayLink": "draudimobrokeriai.lt",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "Insurance LT",
+          "link": "https://insurance.lt/",
+          "displayLink": "insurance.lt",
+          "snippet": "",
+          "name_source": "derived"
+        }
+      ]
+    },
+    {
+      "query": "būsto administravimas daugiabučių priežiūra",
+      "segment": "housing_admin",
+      "country": "LT",
+      "items": [
+        {
+          "title": "Civinity",
+          "link": "https://civinity.lt/",
+          "displayLink": "civinity.lt",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "Mano Bustas",
+          "link": "https://manobustas.lt/",
+          "displayLink": "manobustas.lt",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "Priemiestis",
+          "link": "https://priemiestis.lt/",
+          "displayLink": "priemiestis.lt",
+          "snippet": "",
+          "name_source": "derived"
+        },
+        {
+          "title": "Inbank Lietuva",
+          "link": "https://inbank.lt/",
+          "displayLink": "inbank.lt",
+          "snippet": "",
+          "name_source": "derived"
+        }
+      ]
+    }
+  ]
+}

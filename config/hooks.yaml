@@ -1,0 +1,236 @@
+# Segment-swappable opening lines.
+#
+# One sequence per channel per language, with the opening line swapped by
+# segment. That is three sequence files for LinkedIn, one for email and three
+# for phone, instead of nine per channel.
+#
+# Placeholders, and the only ones allowed:
+#   {first_name}   contact first name, falls back to nothing if unknown
+#   {company}      company name from campaign.companies
+#
+# Copy rules that apply to every string in this file: no em dashes, no
+# AI-flavoured phrasing, casual and human, Lithuanian in the formal Jūs
+# register. Danish and Lithuanian are NOT native-checked. See BLOCKED.md B10.
+
+meta:
+  segments: [accounting, insurance, housing_admin]
+  locales: [en, da, lt]
+  needs_native_check: [da, lt]
+
+segments:
+
+  accounting:
+    label:
+      en: Accounting and bookkeeping firms
+      da: Revisions- og bogholderivirksomheder
+      lt: Buhalterinės apskaitos įmonės
+    en:
+      connect: >-
+        Hi {first_name}, I work with accounting firms on the client email that
+        stacks up in the weeks before a deadline. Happy to connect.
+      pain: >-
+        The week before a filing deadline the same four client questions come
+        in over and over, and every one of them still needs a written answer.
+      question: How does your team handle that stretch at {company}?
+      link_line: >-
+        I put together a page that explains it faster than I can in a message.
+      reel_line: >-
+        Last one from me. Short clip showing what it looks like sitting in
+        Outlook, no setup, no new app.
+      email_subject: The week before the deadline at {company}
+      email_opener: >-
+        Every year the same thing happens in the weeks before a filing
+        deadline. The work is fine. It is the client email that breaks, because
+        the same handful of questions arrive faster than anyone can answer them.
+      phone_opener: >-
+        I work with accounting firms on the client email that piles up before a
+        deadline. Quick question and then I will let you go.
+    da:
+      connect: >-
+        Hej {first_name}. Jeg arbejder med revisionsfirmaer og den bunke
+        kundemails, der vokser i ugerne op mod en frist. Vil gerne forbindes.
+      pain: >-
+        Ugen før en frist kommer de samme fire spørgsmål fra kunderne igen og
+        igen, og de skal alle sammen stadig besvares skriftligt.
+      question: Hvordan klarer I den periode hos {company}?
+      link_line: >-
+        Jeg har lavet en side, der forklarer det hurtigere, end jeg kan i en
+        besked.
+      reel_line: >-
+        Sidste besked fra mig. En kort video, der viser, hvordan det ser ud
+        inde i Outlook. Ingen opsætning, ingen ny app.
+      email_subject: Ugen før fristen hos {company}
+      email_opener: >-
+        Hvert år sker det samme i ugerne op mod en frist. Selve arbejdet går
+        fint. Det er kundemailen, der brænder sammen, fordi de samme få
+        spørgsmål kommer hurtigere ind, end nogen kan nå at svare.
+      phone_opener: >-
+        Jeg arbejder med revisionsfirmaer og den kundemail, der hober sig op før
+        en frist. Et hurtigt spørgsmål, så slipper jeg dig igen.
+    lt:
+      connect: >-
+        Sveiki, {first_name}. Dirbu su buhalterinės apskaitos įmonėmis ir tuo
+        klientų laiškų srautu, kuris išauga prieš terminą. Norėčiau susisiekti.
+      pain: >-
+        Savaitę prieš deklaravimo terminą tie patys keli klientų klausimai
+        kartojasi vėl ir vėl, ir į kiekvieną vis tiek reikia atsakyti raštu.
+      question: Kaip Jūs tą laikotarpį ištveriate {company}?
+      link_line: >-
+        Paruošiau puslapį, kuris tai paaiškina greičiau, nei aš žinute.
+      reel_line: >-
+        Paskutinė žinutė iš manęs. Trumpas vaizdo įrašas, kaip tai atrodo pačiame
+        Outlook. Be diegimo, be naujos programos.
+      email_subject: Savaitė prieš terminą {company}
+      email_opener: >-
+        Kasmet nutinka tas pats. Pats darbas vyksta sklandžiai. Lūžta klientų
+        susirašinėjimas, nes tie patys keli klausimai ateina greičiau, nei
+        spėjate atsakyti.
+      phone_opener: >-
+        Dirbu su apskaitos įmonėmis ir laiškais, kurie kaupiasi prieš terminą.
+        Vienas trumpas klausimas ir Jūsų nebetrukdysiu.
+
+  insurance:
+    label:
+      en: Insurance brokers
+      da: Forsikringsmæglere
+      lt: Draudimo brokeriai
+    en:
+      connect: >-
+        Hi {first_name}, I work with insurance brokers on the client email
+        around claims and renewals. Happy to connect.
+      pain: >-
+        A claim goes in and the client wants an update every couple of days, in
+        writing, while the carrier takes its time. Renewals do the same thing
+        every quarter.
+      question: Who ends up writing most of those updates at {company}?
+      link_line: >-
+        I put together a page that explains it faster than I can in a message.
+      reel_line: >-
+        Last one from me. Short clip showing what it looks like sitting in
+        Outlook, no setup, no new app.
+      email_subject: The claims updates nobody has time to write
+      email_opener: >-
+        A claim goes in, the carrier takes its time, and the client still wants
+        an update every couple of days in writing. Renewals run the same loop
+        every quarter, with a different name on the file.
+      phone_opener: >-
+        I work with brokers on the client email around claims and renewals.
+        Quick question and then I will let you go.
+    da:
+      connect: >-
+        Hej {first_name}. Jeg arbejder med forsikringsmæglere og kundemailen
+        omkring skader og fornyelser. Vil gerne forbindes.
+      pain: >-
+        En skade bliver anmeldt, og kunden vil have en opdatering hver anden dag
+        på skrift, mens selskabet tager sin tid. Fornyelser gør det samme hvert
+        kvartal.
+      question: Hvem ender med at skrive de fleste af de opdateringer hos {company}?
+      link_line: >-
+        Jeg har lavet en side, der forklarer det hurtigere, end jeg kan i en
+        besked.
+      reel_line: >-
+        Sidste besked fra mig. En kort video, der viser, hvordan det ser ud
+        inde i Outlook. Ingen opsætning, ingen ny app.
+      email_subject: De skadesopdateringer, ingen har tid til at skrive
+      email_opener: >-
+        En skade bliver anmeldt, selskabet tager sin tid, og kunden vil stadig
+        have en opdatering hver anden dag på skrift. Fornyelser kører den samme
+        runde hvert kvartal, bare med et andet navn på sagen.
+      phone_opener: >-
+        Jeg arbejder med mæglere og kundemailen omkring skader og fornyelser. Et
+        hurtigt spørgsmål, så slipper jeg dig igen.
+    lt:
+      connect: >-
+        Sveiki, {first_name}. Dirbu su draudimo brokeriais ir susirašinėjimu dėl
+        žalų bei atnaujinimų. Norėčiau susisiekti.
+      pain: >-
+        Pateikiama žala, o klientas nori atnaujinimo kas antrą dieną ir raštu,
+        kol draudikas neskuba. Su polisų atnaujinimais kas ketvirtį kartojasi tas
+        pats.
+      question: Kas galiausiai parašo daugumą tų atnaujinimų {company}?
+      link_line: >-
+        Paruošiau puslapį, kuris tai paaiškina greičiau, nei aš žinute.
+      reel_line: >-
+        Paskutinė žinutė iš manęs. Trumpas vaizdo įrašas, kaip tai atrodo pačiame
+        Outlook. Be diegimo, be naujos programos.
+      email_subject: Žalų atnaujinimai, kuriems niekada neužtenka laiko
+      email_opener: >-
+        Pateikiama žala, draudikas neskuba, o klientas vis tiek nori atnaujinimo
+        kas antrą dieną ir raštu. Su atnaujinimais kas ketvirtį sukasi tas pats
+        ratas, tik su kita pavarde byloje.
+      phone_opener: >-
+        Dirbu su brokeriais ir susirašinėjimu dėl žalų bei atnaujinimų. Vienas
+        trumpas klausimas ir Jūsų nebetrukdysiu.
+
+  housing_admin:
+    label:
+      en: Property, housing and facility administration
+      da: Bolig-, ejendoms- og facilityadministration
+      lt: Būsto ir pastatų administravimas
+    en:
+      connect: >-
+        Hi {first_name}, I work with property and housing administrators on the
+        tenant and board email that fills the office inbox. Happy to connect.
+      pain: >-
+        Tenants and board members write to the office all day, and most of it is
+        the same short list of questions about rent, repairs and move outs.
+      question: How many people at {company} are in that inbox on a normal day?
+      link_line: >-
+        I put together a page that explains it faster than I can in a message.
+      reel_line: >-
+        Last one from me. Short clip showing what it looks like sitting in
+        Outlook, no setup, no new app.
+      email_subject: The office inbox at {company}
+      email_opener: >-
+        Tenants and board members write to the office all day, and most of it is
+        the same short list of questions about rent, repairs and move outs.
+        Every one of them is fair, and every one of them still needs an answer.
+      phone_opener: >-
+        I work with property administrators on the tenant email that fills the
+        office inbox. Quick question and then I will let you go.
+    da:
+      connect: >-
+        Hej {first_name}. Jeg arbejder med ejendoms- og boligadministratorer og
+        den beboer- og bestyrelsesmail, der fylder kontorets indbakke. Vil gerne
+        forbindes.
+      pain: >-
+        Beboere og bestyrelsesmedlemmer skriver til kontoret hele dagen, og det
+        meste er de samme få spørgsmål om husleje, reparationer og fraflytning.
+      question: Hvor mange hos {company} sidder i den indbakke på en almindelig dag?
+      link_line: >-
+        Jeg har lavet en side, der forklarer det hurtigere, end jeg kan i en
+        besked.
+      reel_line: >-
+        Sidste besked fra mig. En kort video, der viser, hvordan det ser ud
+        inde i Outlook. Ingen opsætning, ingen ny app.
+      email_subject: Kontorets indbakke hos {company}
+      email_opener: >-
+        Beboere og bestyrelsesmedlemmer skriver til kontoret hele dagen, og det
+        meste er de samme få spørgsmål om husleje, reparationer og fraflytning.
+        De er alle sammen rimelige, og de skal alle sammen stadig besvares.
+      phone_opener: >-
+        Jeg arbejder med ejendomsadministratorer og den beboermail, der fylder
+        kontorets indbakke. Et hurtigt spørgsmål, så slipper jeg dig igen.
+    lt:
+      connect: >-
+        Sveiki, {first_name}. Dirbu su būsto ir pastatų administratoriais bei
+        gyventojų laiškais, kurie užpildo biuro pašto dėžutę. Norėčiau susisiekti.
+      pain: >-
+        Gyventojai ir bendrijos pirmininkai rašo į biurą visą dieną, ir dauguma
+        laiškų yra tie patys keli klausimai apie mokesčius, remontą ir
+        išsikraustymą.
+      question: Kiek žmonių {company} įprastą dieną sėdi toje pašto dėžutėje?
+      link_line: >-
+        Paruošiau puslapį, kuris tai paaiškina greičiau, nei aš žinute.
+      reel_line: >-
+        Paskutinė žinutė iš manęs. Trumpas vaizdo įrašas, kaip tai atrodo pačiame
+        Outlook. Be diegimo, be naujos programos.
+      email_subject: Biuro pašto dėžutė {company}
+      email_opener: >-
+        Gyventojai ir bendrijos pirmininkai rašo į biurą visą dieną, ir dauguma
+        laiškų yra tie patys keli klausimai apie mokesčius, remontą ir
+        išsikraustymą. Kiekvienas jų pagrįstas, ir į kiekvieną vis tiek reikia
+        atsakyti.
+      phone_opener: >-
+        Dirbu su pastatų administratoriais ir gyventojų laiškais, kurie užpildo
+        biuro pašto dėžutę. Vienas trumpas klausimas ir Jūsų nebetrukdysiu.
