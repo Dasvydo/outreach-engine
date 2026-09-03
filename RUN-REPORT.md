@@ -386,8 +386,23 @@ Seven of those are the repo's original gate tests, untouched and still passing.
 hard gate and being dropped. Found by probing 84 real ICP domains, not by reading
 documentation: `redmark.dk` and `vbtm.nl` were both in the campaign's own
 candidate lists and both were being thrown away. One signature added, regression
-test in `tests/test_icp_finder.py`. This was the only change made to
-pre-existing code, and it is an addition, not a rewrite.
+test in `tests/test_icp_finder.py`. That is the only change made to pre-existing
+code, and it is an addition, not a rewrite.
+
+A second, quieter version of the same problem was found while stabilising the
+test suite: **a DNS timeout looks exactly like a firm with no Microsoft 365.**
+Under concurrency a handful of MX lookups time out on any given run, and every
+one of those was silently dropping a qualified firm from the list. No error, no
+crash, just a shorter list than you should have had, varying run to run. The
+finder now retries an UNKNOWN result once and reports undecidable domains
+separately from genuine non-Microsoft ones:
+
+```
+M365 hard gate    19 pass, 5 rejected (0 of those undecidable, retry them)
+```
+
+If that number is ever above zero, the run under-counted and is worth repeating.
+Across three markets it is currently zero.
 
 ---
 

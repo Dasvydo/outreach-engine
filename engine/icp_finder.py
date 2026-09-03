@@ -299,7 +299,7 @@ def _hook_seed(hooks: dict[str, Any], segment: str, locale: str) -> str:
 
 def run_market(market: str, *, probe: bool = True, use_ledger: bool = True,
                lists_dir: Path | None = None, run_date: str | None = None,
-               workers: int = 8) -> dict[str, Any]:
+               workers: int = 6) -> dict[str, Any]:
     cfg = load_config(market)
     locale = LOCALE_BY_MARKET[market]
     hooks = yaml.safe_load(HOOKS_PATH.read_text(encoding="utf-8"))
@@ -324,8 +324,18 @@ def run_market(market: str, *, probe: bool = True, use_ledger: bool = True,
         unique.setdefault(cand.domain, cand)
 
     # Hard gate 1: Microsoft 365 by MX. Real DNS on every run.
+    #
+    # Retried once on UNKNOWN. UNKNOWN is what a DNS timeout looks like, and
+    # under concurrency a handful of lookups time out on any given run. Left
+    # unretried, a qualified Microsoft 365 firm gets silently dropped from the
+    # list because the resolver was busy, which is the worst kind of bug: no
+    # error, no crash, just a smaller list than you should have had. A domain
+    # that genuinely has no MX resolves to UNKNOWN twice and costs one extra
+    # query.
     def mx(cand: Candidate):
-        result = classify(cand.domain)
+        result = classify(cand.domain, timeout=8.0)
+        if result.provider is Provider.UNKNOWN:
+            result = classify(cand.domain, timeout=8.0)
         return cand, result
 
     passed_mx: list[tuple[Candidate, Any]] = []
@@ -430,6 +440,11 @@ def run_market(market: str, *, probe: bool = True, use_ledger: bool = True,
         "unique_domains": len(unique),
         "passed_mx_gate": len(passed_mx),
         "failed_mx_gate": len(failed_mx),
+        # UNKNOWN is "we could not tell", not "not Microsoft". Reported apart so
+        # a run with a bad resolver is visible rather than looking like a market
+        # that simply has fewer Microsoft shops in it.
+        "undecidable_mx": sum(
+            1 for _, r in failed_mx if r.provider is Provider.UNKNOWN),
         "failed_icp_gate": len(gate_rejects),
         "new": len(new_rows),
         "already_in_ledger": len(duplicates),
@@ -512,7 +527,8 @@ def main(argv: list[str] | None = None) -> int:
               f"({s['excluded_directories']} directory hits dropped)")
         print(f"  unique domains    {s['unique_domains']}")
         print(f"  M365 hard gate    {s['passed_mx_gate']} pass, "
-              f"{s['failed_mx_gate']} rejected")
+              f"{s['failed_mx_gate']} rejected "
+              f"({s['undecidable_mx']} of those undecidable, retry them)")
         print(f"  ICP gate          {s['failed_icp_gate']} hard-failed "
               f"(written to the ledger as disqualified, kept out of the CSV)")
         print(f"  new this run      {s['new']}")
