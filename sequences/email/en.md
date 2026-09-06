@@ -61,8 +61,15 @@ bottom of this file so nobody has to imagine what it looks like.
 
 $89 per seat per month plus $500 setup covering the workshop, onboarding and
 setup. Teams of 10 and up. Free two week pilot with the workshop and setup
-included, billing starts on day 14. Around 9x ROI, about 400 euro a month saved,
-payback in roughly 40 days. Inside Outlook. Never auto sends. Runs in Europe.
+included, billing starts on day 14. Inside Outlook. Never auto sends. Runs in
+Europe.
+
+The ROI figures (around 9x, about 400 euro a month, payback in roughly 40 days)
+are MODELLED, not measured. They come from a model that assumes a fixed amount
+of time saved per person per day, priced at a team's own cost. No customer has
+reported them and nothing has been measured. The copy may use them as a worked
+example, and only when it says so in the same breath. Never write that firms
+are saving, seeing, getting or reporting them.
 
 No testimonials and no named pilots exist. Do not invent either.
 
@@ -119,11 +126,14 @@ No testimonials and no named pilots exist. Do not invent either.
 
 > {{firstName}},
 >
-> I will keep this one to the arithmetic.
+> I will keep this one to the arithmetic, and I will be straight that it is a
+> model, not a customer number. Nobody has measured this yet.
 >
-> Teams running it save somewhere around 400 euro a month. Against $89 a seat
-> and the one off $500 setup, that is roughly 9x return and the setup pays for
-> itself in about 40 days.
+> Assume each person gets about twenty minutes a day back from routine client
+> email. For a team of ten that models out to somewhere around 400 euro a month.
+> Against $89 a seat and the one off $500 setup, that would be roughly 9x and
+> the setup paying for itself in about 40 days. Your own numbers will replace
+> the assumption in the first two weeks.
 >
 > I would rather show you than send you a spreadsheet:
 > https://teams.doviloop.dev/?utm_source=instantly&utm_medium=email&utm_campaign=teams_q4&utm_content=global_3

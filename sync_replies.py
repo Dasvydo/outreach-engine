@@ -10,11 +10,11 @@ Writes `replied_at` and `reply_sentiment` onto `campaign.touches` through
 
 ## The taxonomy
 
-The spec says to classify with the DSD discovery pipeline's six-value taxonomy.
-That pipeline is not in this container and the spec never enumerates the six
-values, so `config/reply_taxonomy.yaml` holds six reconstructed ones, honestly
-labelled. See BLOCKED.md B5. This module reads the YAML, so replacing the six
-with the real ones is a config edit and no Python changes.
+`config/reply_taxonomy.yaml` holds the six reply values, and since 2026-09-06
+they are canonical campaign-wide: the ledger's `campaign.reply_sentiment` enum
+carries the same six and `engine/ledger.py` passes them through unchanged
+(BLOCKED.md B5 and C-B4, both resolved). This module reads the YAML, so a
+wording change is a config edit and no Python change.
 
 ## Two classifiers
 
@@ -195,8 +195,9 @@ def main(argv: list[str] | None = None) -> int:
 
     taxonomy = load_taxonomy(args.taxonomy)
     if not taxonomy.get("canonical", False):
-        print("NOTE: the reply taxonomy in config/reply_taxonomy.yaml is "
-              "reconstructed, not the real DSD six. See BLOCKED.md B5.\n")
+        print("NOTE: the reply taxonomy in config/reply_taxonomy.yaml is marked "
+              "canonical: false. The six ids became canonical campaign-wide on "
+              "2026-09-06; check the file before writing to the ledger.\n")
 
     replies = fetch_replies(args.replies, live=not args.dry_run)
     stages = {v["id"]: v["ledger_stage"] for v in taxonomy["values"]}

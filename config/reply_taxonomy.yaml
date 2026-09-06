@@ -1,29 +1,21 @@
 # Reply classification vocabulary for sync_replies.py.
 #
-# RECONSTRUCTED, NOT CANONICAL. The spec says to reuse the DSD discovery
-# pipeline's six-value taxonomy. That pipeline is not present in this container
-# and the spec never enumerates the six values, so these six were defined here
-# instead and are honestly labelled as this batch's invention. See BLOCKED.md B5.
+# CANONICAL, CAMPAIGN-WIDE. Decided by Dovy on 2026-09-06: the six ids below
+# are the reply sentiment taxonomy for the whole campaign, and the ledger's
+# campaign.reply_sentiment enum carries exactly these six. engine/ledger.py
+# passes them through to campaign_db.record_reply unchanged and refuses anything
+# outside the set. sync_replies.py reads this YAML, so a wording change here
+# needs no Python change; an id change here must be mirrored in the ledger's
+# enum, and tests/test_ledger_contract.py checks that the two agree.
 #
-# When the real six arrive, edit this file only. sync_replies.py reads the YAML
-# and needs no Python change.
-#
-# 2026-09-03, RECONCILIATION: the real six are now readable. Batch B's ledger
-# declares campaign.reply_sentiment as
-#
-#     hot_pain, curious, endorse, objection, unrelated, ineligible
-#
-# which is not the six below. B's own comment calls its list "the six-value
-# taxonomy already in use by the outreach engine", so each batch believed the
-# other owned it. Only `objection` is common to both. Deciding that, say,
-# `interested` means `hot_pain` rather than `curious` changes what every reply
-# rate in the Friday brief means, so it is not a mapping this repo may invent:
-# engine/ledger.py refuses any value B does not know, naming both lists.
-# Replacing the six ids below with B's six is the whole fix, and needs no
-# Python change. See BLOCKED.md C-B4.
+# History, kept so the labels below make sense: these six were first written on
+# 2026-09-03 as a reconstruction (BLOCKED.md B5) because the spec named a
+# six-value taxonomy without listing it. Batch B's ledger shipped a different
+# six in parallel (hot_pain, curious, endorse, objection, unrelated, ineligible;
+# BLOCKED.md C-B4). Both entries are resolved: this list won.
 
-version: reconstructed-2026-09-03
-canonical: false
+version: canonical-2026-09-06
+canonical: true
 
 values:
   - id: interested

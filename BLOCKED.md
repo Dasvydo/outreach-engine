@@ -24,6 +24,13 @@ run and can be imported later without re-running discovery.
 migration himself, drops `campaign_db.py` on the path, sets `CAMPAIGN_DB_URL`. Then
 `python3 -m engine.icp_finder --market dk --commit` writes for real.
 
+**Update 2026-09-06:** the ledger project is confirmed as `oqpeebtwtikdzorgouxd`
+(lead-pipeline / DSD project, schema `campaign`). `.env.example` names it. What
+remains is credentials and the migration, not a decision: `campaign_db.py` reads
+`SUPABASE_URL` and `SUPABASE_SERVICE_KEY`, and this container's ambient
+`SUPABASE_URL` still points at the product project, so nothing was connected to
+from here.
+
 ---
 
 ## B2 — `icp_finder.py` is not in this container
@@ -96,6 +103,10 @@ change.
 
 **Unblocks it:** Dovy pastes the real six values into that YAML. About 2 minutes.
 
+**Resolved 2026-09-06.** Dovy decided the six in this repo are the canonical
+campaign-wide taxonomy. `config/reply_taxonomy.yaml` is now `canonical: true`
+and the ledger's `campaign.reply_sentiment` enum carries the same six. See C-B4.
+
 ---
 
 ## B6 — No Instantly API key, nothing sent
@@ -150,6 +161,12 @@ change two other repos' source of truth. Left untouched.
 **Unblocks it:** Dovy reconciles the two, in the canonical brief, once. About 5
 minutes, and it should happen before any of the three repos ships copy.
 
+**Resolved 2026-09-06.** Dovy set the price campaign-wide: $89 per seat per month
+plus $500 one-off setup. `docs/ICP-BRIEF.md` in this repo now says so and carries
+a note that the $49/$99/$750 figures were retired on this date. The two arm
+JSON files under `copy/` had a "design partners at half price" line from the
+old offer; it now describes the free two-week pilot instead.
+
 ---
 
 ## B9 — No testimonials and no named pilots
@@ -165,6 +182,14 @@ brief, and the real August outreach drafts in the Drive "DoviLoop Ops" folder. N
 firm is named anywhere in the copy.
 
 **Unblocks it:** the first pilot that agrees to be named.
+
+**Update 2026-09-06:** "corroborated in two independent places" means two
+documents agree on the numbers, not that anyone measured them. Dovy confirmed the
+ROI figures are MODELLED from an assumed amount of time saved per person, not
+observed with any customer. Every sequence file now frames them as a model, the
+"firms running it are saving" lines are gone, and `tests/test_sequences.py`
+fails the build if the message text presents them as measured. They still fill
+the proof slot, honestly labelled.
 
 ---
 
@@ -446,3 +471,34 @@ error.
 **Unblocks it:** replace the six ids in `config/reply_taxonomy.yaml` with B's
 six. No Python change — `sync_replies.py` reads the YAML. The keyword patterns
 and `ledger_stage` routing move across with them.
+
+**RESOLVED 2026-09-06, the other way round.** Dovy decided this repo's six
+(`interested`, `not_now`, `not_a_fit`, `referred`, `objection`, `unsubscribe`)
+are canonical campaign-wide, and the ledger's `campaign.reply_sentiment` enum was
+changed to them (campaign-ledger commit `8cb1869`). What changed here:
+
+- `config/reply_taxonomy.yaml` is `canonical: true`, version `canonical-2026-09-06`.
+- `engine/ledger.py` passes a sentiment through to `record_reply` as itself. The
+  old `_B_SENTIMENTS` list and the "here are both lists" error are gone. A single
+  `SENTIMENTS` tuple remains and anything outside it is still refused with a
+  readable message, so a classifier typo never reaches Postgres.
+- `tests/test_ledger_contract.py` asserts the YAML, the adapter tuple and the
+  ledger's `_SENTIMENTS` agree, and binds all six against the real `record_reply`
+  signature. If the ledger file on disk is ever behind, that test skips with a
+  message naming the stale values rather than failing.
+
+---
+
+# Decisions applied — 2026-09-06
+
+Four campaign-wide decisions from Dovy, applied in this repo on this date. None
+of them opened a new blocker; they closed B5, B8 and C-B4 and narrowed B1 and B9
+to credentials and copy respectively. The entries above carry their own dated
+resolution lines; this is the index.
+
+| Decision | Entries touched | What changed here |
+|---|---|---|
+| ROI figures are modelled, not measured | B9 | seven sequence files reframed; README and AUDIT say so; new test guards it |
+| Price is $89/seat/month + $500 setup, everywhere | B8 | `docs/ICP-BRIEF.md` updated with a retirement note; `copy/*.json` half-price line replaced |
+| The six reply values here are canonical | B5, C-B4 | YAML `canonical: true`; adapter is identity plus validation; contract test binds all six |
+| Ledger project is `oqpeebtwtikdzorgouxd` | B1 | `.env.example` names it and the two variables the ledger client actually reads |

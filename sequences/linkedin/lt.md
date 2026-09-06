@@ -36,12 +36,19 @@ https://teams.doviloop.dev/?utm_source=linkedin&utm_medium=dm&utm_campaign=teams
 
 89 doleriai už vartotoją per mėnesį ir 500 dolerių įdiegimo mokestis, apimantis
 mokymus, prijungimą ir konfigūraciją. Nuo 10 vartotojų. Dvi savaitės nemokamo
-bandymo su mokymais ir konfigūracija, mokėjimas prasideda 14 dieną. Apie 9 kartus
-grąža, apie 400 eurų sutaupoma per mėnesį, atsiperka maždaug per 40 dienų. Veikia
+bandymo su mokymais ir konfigūracija, mokėjimas prasideda 14 dieną. Veikia
 pačiame Outlook. Niekada nieko neišsiunčia savarankiškai. Veikia Europoje.
 
+Grąžos skaičiai (apie 9 kartus, apie 400 eurų per mėnesį, atsiperka maždaug per
+40 dienų) yra MODELIUOTI, ne išmatuoti. Jie gaunami iš modelio, kuris daro
+prielaidą apie fiksuotą sutaupytų minučių skaičių vienam žmogui per dieną. Nė
+vienas klientas jų nepatvirtino. Tekste juos galima naudoti kaip skaičiavimo
+pavyzdį, ir tik tada, kai tai pasakoma tame pačiame sakinyje. Niekada nerašykite,
+kad įmonės sutaupo, mato, gauna ar praneša tokius skaičius.
+
 Klientų atsiliepimų ir įvardytų bandomųjų klientų nėra. Jų nesugalvokite. Ten,
-kur paprastai būtų atsiliepimas, rašomi skaičiai.
+kur paprastai būtų atsiliepimas, tekstas atvirai pasako, kad jų dar nėra, ir
+vietoj to parodo modelį.
 
 ---
 
@@ -118,8 +125,10 @@ Trumpai, vienas skaičius, vaizdo įrašas ir tikras atsisveikinimas.
 > Outlook. Be diegimo, be naujos programos:
 > https://teams.doviloop.dev/?utm_source=linkedin&utm_medium=dm&utm_campaign=teams_q4&utm_content=lt_4
 >
-> Įmonės, kurios tai naudoja, sutaupo apie 400 eurų per mėnesį komandai, o
-> įdiegimo kaina atsiperka maždaug per šešias savaites. Pirmos dvi savaitės
+> Vienas skaičius, ir tai modelis, ne kliento duomenys, nes niekas to dar
+> neišmatavo: darant prielaidą, kad kiekvienas žmogus sutaupo apie dvidešimt
+> minučių per dieną, dešimties žmonių komandai išeina apie 400 eurų per mėnesį,
+> o įdiegimo kaina atsipirktų maždaug per šešias savaites. Pirmos dvi savaitės
 > nemokamos, konfigūraciją atliekame mes, tad pradžioje Jums tai kainuoja tik
 > vieną popietę mokymams.
 >

@@ -128,7 +128,7 @@ REPLY_CALL = dict(
     step=1,
     market="global",
     replied_at="2026-09-24T09:12:00Z",
-    reply_sentiment="hot_pain",
+    reply_sentiment="interested",
     ledger_stage="qualified",
     classifier="keyword",
     classifier_note="matched en:'sounds good'",
@@ -389,10 +389,10 @@ def test_a_reply_passed_to_log_touch_is_forwarded_to_record_reply(strict_ledger)
     """B's log_touch takes neither replied_at nor reply_sentiment; they belong
     to record_reply. Forwarded rather than dropped."""
     ledger.log_touch(**{**LOADER_CALL, "replied_at": "2026-09-24T09:12:00Z",
-                        "reply_sentiment": "hot_pain"})
+                        "reply_sentiment": "interested"})
     names = [name for name, _, _ in strict_ledger.calls]
     assert names[-1] == "record_reply"
-    assert strict_ledger.calls[-1][2]["sentiment"] == "hot_pain"
+    assert strict_ledger.calls[-1][2]["sentiment"] == "interested"
 
 
 def test_the_finders_real_call_site_binds_end_to_end(strict_ledger, tmp_path):
@@ -445,15 +445,61 @@ def test_the_funnel_views_take_no_arguments_on_bs_side(campaign_db, monkeypatch)
     assert ledger.get_market_funnel() == rows
 
 
-def test_a_sentiment_batch_b_does_not_know_is_refused_with_both_lists(campaign_db):
-    """This repo's reply_taxonomy.yaml was reconstructed and its six ids are
-    not B's six. Refused here, with both vocabularies in the message, rather
-    than guessed at or sent to be rejected as an opaque enum cast error."""
-    assert set(campaign_db._SENTIMENTS) == {
-        "hot_pain", "curious", "endorse", "objection", "unrelated", "ineligible"}
-    with pytest.raises(ledger.LedgerVocabularyMismatch, match="hot_pain"):
-        ledger.reply_kwargs("cid", **{**REPLY_CALL, "reply_sentiment": "interested"})
-    # B's own six still pass straight through.
-    for value in campaign_db._SENTIMENTS:
+# --------------------------------------------------------------------------
+# The reply taxonomy. Canonical campaign-wide since 2026-09-06.
+# --------------------------------------------------------------------------
+
+CANONICAL_SENTIMENTS = ("interested", "not_now", "not_a_fit", "referred",
+                        "objection", "unsubscribe")
+
+
+def test_the_adapters_six_are_the_taxonomy_files_six():
+    """One list, two places. The YAML is what the classifier reads and the
+    tuple is what the seam validates against; they must never drift."""
+    import yaml
+    taxonomy = yaml.safe_load((ROOT / "config" / "reply_taxonomy.yaml")
+                              .read_text(encoding="utf-8"))
+    assert taxonomy["canonical"] is True
+    assert tuple(v["id"] for v in taxonomy["values"]) == CANONICAL_SENTIMENTS
+    assert ledger.SENTIMENTS == CANONICAL_SENTIMENTS
+
+
+def test_a_value_outside_the_six_is_refused_before_it_reaches_the_ledger():
+    """Identity pass-through is not no validation. A typo in a classifier, or
+    one of the ledger's retired pre-2026-09-06 values, stops here with a
+    readable message instead of as a Postgres enum cast error."""
+    for bad in ("hot_pain", "curious", "Interested", "maybe"):
+        with pytest.raises(ledger.LedgerVocabularyMismatch, match="canonical"):
+            ledger.reply_kwargs("cid", **{**REPLY_CALL, "reply_sentiment": bad})
+    # And nothing in the message pretends there is a second list to map onto.
+    with pytest.raises(ledger.LedgerVocabularyMismatch) as caught:
+        ledger.reply_kwargs("cid", **{**REPLY_CALL, "reply_sentiment": "maybe"})
+    assert "Batch B" not in str(caught.value)
+    assert "reconstructed" not in str(caught.value)
+
+
+def _require_ledger_carries_the_canonical_six(campaign_db):
+    """The ledger's enum is being changed to these six by a parallel session.
+    Until that lands on disk, the bind test below has nothing true to assert
+    against, so it skips with a message naming exactly what is still stale."""
+    on_disk = tuple(campaign_db._SENTIMENTS)
+    if set(on_disk) != set(CANONICAL_SENTIMENTS):
+        pytest.skip(
+            "campaign_db._SENTIMENTS on disk is " + ", ".join(on_disk) + "; the "
+            "canonical six (" + ", ".join(CANONICAL_SENTIMENTS) + ") were decided "
+            "on 2026-09-06 and the campaign-ledger repo has not been updated to "
+            "them yet. Re-run once it has.")
+
+
+def test_all_six_canonical_sentiments_bind_against_the_ledger_client(campaign_db):
+    """Each of the six crosses the seam as itself and is accepted by the real
+    `record_reply` signature AND by its `_SENTIMENTS` enum check, so a
+    classification this repo makes is one the ledger will store unchanged."""
+    _require_ledger_carries_the_canonical_six(campaign_db)
+    for value in CANONICAL_SENTIMENTS:
         out = ledger.reply_kwargs("cid", **{**REPLY_CALL, "reply_sentiment": value})
-        assert out["sentiment"] == value
+        assert out["sentiment"] == value, "the seam must not rename a sentiment"
+        binds(campaign_db.record_reply, out)
+        assert value in campaign_db._SENTIMENTS
+    assert set(campaign_db._SENTIMENTS) == set(CANONICAL_SENTIMENTS), (
+        "the ledger carries a sentiment this repo's classifier can never produce")

@@ -38,12 +38,18 @@ https://teams.doviloop.dev/?utm_source=linkedin&utm_medium=dm&utm_campaign=teams
 
 89 dollar pr. bruger om måneden plus 500 dollar i opstart, som dækker workshop,
 onboarding og opsætning. Fra 10 brugere. To ugers gratis pilot med workshop og
-opsætning inkluderet, betaling starter på dag 14. Cirka 9 gange afkast, omkring
-400 euro sparet om måneden, tjent hjem på cirka 40 dage. Det kører inde i
-Outlook. Det sender aldrig noget af sig selv. Det kører i Europa.
+opsætning inkluderet, betaling starter på dag 14. Det kører inde i Outlook. Det
+sender aldrig noget af sig selv. Det kører i Europa.
+
+Afkasttallene (cirka 9 gange, omkring 400 euro om måneden, tjent hjem på cirka
+40 dage) er MODELLEREDE, ikke målte. De kommer fra en model, der antager et fast
+antal sparede minutter pr. person pr. dag. Ingen kunde har rapporteret dem.
+Teksten må bruge dem som et regneeksempel, og kun når den siger det i samme
+sætning. Skriv aldrig, at firmaer sparer, ser, får eller rapporterer dem.
 
 Der findes ingen udtalelser fra kunder og ingen navngivne pilotkunder. Find ikke
-på nogen. Hvor social proof normalt ville stå, står tallene i stedet.
+på nogen. Hvor social proof normalt ville stå, siger teksten ærligt, at der ikke
+er nogen endnu, og viser modellen i stedet.
 
 ---
 
@@ -120,10 +126,11 @@ Kort, ét tal, en video, og et rigtigt farvel.
 > Outlook. Ingen opsætning, ingen ny app:
 > https://teams.doviloop.dev/?utm_source=linkedin&utm_medium=dm&utm_campaign=teams_q4&utm_content=dk_4
 >
-> De firmaer, der kører det, sparer omkring 400 euro om måneden pr. team og har
-> tjent opstarten hjem på cirka seks uger. De første to uger er gratis, og vi
-> laver opsætningen, så det eneste, det koster jer i starten, er en eftermiddag
-> til workshoppen.
+> Ét tal, og det er en model, ikke et kundetal, for ingen har målt det endnu:
+> antag cirka tyve minutter sparet om dagen pr. person, så lander et team på ti
+> på omkring 400 euro om måneden, og opstarten er tjent hjem på cirka seks uger.
+> De første to uger er gratis, og vi laver opsætningen, så det eneste, det koster
+> jer i starten, er en eftermiddag til workshoppen.
 >
 > Passer timingen ikke, så passer den ikke. Held og lykke med sæsonen.
 

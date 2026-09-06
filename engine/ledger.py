@@ -122,7 +122,7 @@ TOUCH_COLUMNS = (
     "status",            # planned | sent | bounced | skipped
     "sent_at",
     "replied_at",        # stated in the Batch C spec
-    "reply_sentiment",   # stated in the Batch C spec, one of the six taxonomy values
+    "reply_sentiment",   # one of the six canonical values in SENTIMENTS below
     "created_at",
 )
 
@@ -259,21 +259,20 @@ _B_COMPANY_SOURCES = ("icp_finder", "linkedin", "inbound")
 _B_MARKETS = ("dk", "lt", "global")
 _B_LANGS = ("en", "da", "lt")
 
-# B's `campaign.reply_sentiment` enum, read from 001_schema.sql. Batch B's own
-# comment calls this "the six-value reply taxonomy already in use by the
-# outreach engine", but it is NOT the six in this repo's
-# config/reply_taxonomy.yaml, which were reconstructed here because the real
-# ones could not be read at the time (BLOCKED.md B5). Neither list is wrong;
-# they were written in parallel. The mapping between them is a judgement call
-# about what a reply MEANS, which is not this seam's to make, so a value B does
-# not know is refused here with both lists in the message rather than being
-# guessed at. See BLOCKED.md C-B4.
-_B_SENTIMENTS = ("hot_pain", "curious", "endorse", "objection", "unrelated",
-                 "ineligible")
+# The reply sentiment taxonomy. CANONICAL campaign-wide since 2026-09-06: these
+# six ids are the ones in config/reply_taxonomy.yaml, and the ledger's
+# campaign.reply_sentiment enum carries exactly the same six, so a sentiment
+# crosses this seam as itself. No mapping, no renaming. The only thing done here
+# is to refuse anything outside the six before it reaches the ledger, so a typo
+# in a classifier fails with a readable message rather than as a Postgres enum
+# cast error. `tests/test_ledger_contract.py` asserts the ledger client agrees.
+# (BLOCKED.md B5 and C-B4, both resolved.)
+SENTIMENTS = ("interested", "not_now", "not_a_fit", "referred", "objection",
+              "unsubscribe")
 
 
 class LedgerVocabularyMismatch(RuntimeError):
-    """A value this repo uses has no counterpart in one of B's enums."""
+    """A value this repo uses is outside one of the shared enums."""
 
 
 class LedgerContactUnresolved(RuntimeError):
@@ -479,14 +478,12 @@ def reply_kwargs(contact_id: str, **row: Any) -> dict[str, Any]:
     which is the honest place for "a model said this, and here is which model".
     """
     sentiment = row.get("reply_sentiment") or row.get("sentiment")
-    if sentiment is not None and sentiment not in _B_SENTIMENTS:
+    if sentiment is not None and sentiment not in SENTIMENTS:
         raise LedgerVocabularyMismatch(
-            f"reply_sentiment={sentiment!r} is not one of Batch B's six "
-            f"({', '.join(_B_SENTIMENTS)}). This repo's "
-            "config/reply_taxonomy.yaml was reconstructed and its six ids are "
-            "different ones. Reconcile the two - deciding what each reply means "
-            "is a human call, not a mapping this seam may invent. "
-            "See BLOCKED.md C-B4.")
+            f"reply_sentiment={sentiment!r} is not one of the six canonical "
+            f"reply values ({', '.join(SENTIMENTS)}). The list lives in "
+            "config/reply_taxonomy.yaml and the ledger's campaign.reply_sentiment "
+            "enum carries the same six; nothing outside it is written.")
 
     out = {
         "contact_id": contact_id,

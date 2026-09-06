@@ -9,6 +9,7 @@ import pytest
 import build_linkedin_queue as blq
 import load_instantly
 import sync_replies
+from engine import ledger
 from engine.contacts import ContactRow, load_contacts
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -132,9 +133,12 @@ def test_the_taxonomy_has_exactly_six_values():
     assert len(set(ids)) == 6
 
 
-def test_the_taxonomy_is_honestly_marked_as_reconstructed():
-    """It is not the real DSD six and must not pretend to be. BLOCKED.md B5."""
-    assert sync_replies.load_taxonomy()["canonical"] is False
+def test_the_taxonomy_is_marked_canonical():
+    """Decided 2026-09-06: these six are the campaign-wide reply taxonomy and
+    the ledger's enum carries the same six. BLOCKED.md B5 and C-B4, resolved."""
+    taxonomy = sync_replies.load_taxonomy()
+    assert taxonomy["canonical"] is True
+    assert [v["id"] for v in taxonomy["values"]] == list(ledger.SENTIMENTS)
 
 
 @pytest.mark.parametrize("body,expected", [

@@ -152,7 +152,7 @@ fails the build if anyone weakens it. Denmark runs on LinkedIn and phone, and
 ```
 config/queries/{dk,lt,global}.yaml   search queries, editable without code
 config/hooks.yaml                    segment openers, 3 segments x 3 locales
-config/reply_taxonomy.yaml           six reply values, reconstructed
+config/reply_taxonomy.yaml           six reply values, canonical campaign-wide
 engine/icp_finder.py                 search -> MX gate -> dedup -> dated CSV
 engine/signals.py                    dev-team and size soft signals
 engine/ledger.py                     the campaign_db.py seam
@@ -186,13 +186,19 @@ python3 sync_replies.py --dry-run
 python3 -m pytest -q
 ```
 
-## The campaign offer, which is not the offer in docs/ICP-BRIEF.md
+## The campaign offer
 
 The campaign prices at **$89 per seat per month plus a $500 setup fee** covering
 the workshop, onboarding and setup, for teams of 10 and up, with a free two week
-pilot and billing starting on day 14.
+pilot and billing starting on day 14. That is the single price everywhere,
+`docs/ICP-BRIEF.md` included: the earlier $49 / $99 seat rates and $750
+onboarding were retired on 2026-09-06 (BLOCKED.md B8, resolved).
 
-`docs/ICP-BRIEF.md` still says $49 and $99 a seat with $750 onboarding. The two
-disagree. The campaign brief is dated later and all campaign copy follows it.
-The locked brief was deliberately left untouched because `reel-engine` and
-`ad-engine` share it. See `BLOCKED.md` B8, and reconcile it once.
+## The ROI figures are a model, not a measurement
+
+The copy quotes roughly 9x, about 400 euro a month per team and payback in
+about 40 days. Those are MODELLED from an assumed amount of time saved per
+person per day. No customer has reported them and nothing has been measured.
+Every sequence file says so where it uses them, and the copy is only allowed to
+quote them as a worked example framed as a model. `tests/test_sequences.py`
+fails the build if the message text claims firms are saving or seeing them.

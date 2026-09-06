@@ -178,8 +178,10 @@ Two related copy checks that are not in the spec's list but are in its spirit:
 `test_no_invented_social_proof` bans testimonial-shaped phrasing, because none
 exists and the campaign brief says not to invent any. Where social proof would
 normally sit, the ROI figures sit instead: around 9x return, about 400 euro a
-month saved, payback in roughly 40 days. Those are corroborated in two
-independent places, `00-START-HERE.md` and your real August drafts in Drive.
+month saved, payback in roughly 40 days. The same numbers appear in
+`00-START-HERE.md` and your real August drafts in Drive, which is agreement, not
+measurement. (2026-09-06: confirmed MODELLED, not measured, and every sequence
+file now says so where it quotes them. See "Decisions applied" at the end.)
 
 ### Both loaders run clean in `--dry-run`
 
@@ -475,9 +477,9 @@ LinkedIn queue format.
 | 1 | Add `GOOGLE_API_KEY` and `GOOGLE_CSE_ID` to `.env`, re-run `python3 -m engine.icp_finder --all --probe` | 5 min | No key in the session. This is what turns 41 companies into a few hundred. |
 | 2 | Open the `linkedin-automator`, read one queue file it accepts, edit `QUEUE_FIELDS` in `build_linkedin_queue.py` to match | 5 min | The tool is not in this container. This is the one deliverable that cannot be called verified. |
 | 3 | Read `sequences/linkedin/da.md`, `phone/da.md`, `linkedin/lt.md`, `phone/lt.md`, then send all four to native speakers | 10 min to read, then wait | Nobody in this session speaks Danish or Lithuanian natively. |
-| 4 | Paste the real DSD six values into `config/reply_taxonomy.yaml` | 2 min | Not recoverable in this container, and the spec never lists them. |
+| 4 | ~~Paste the real DSD six values into `config/reply_taxonomy.yaml`~~ Done 2026-09-06: this repo's six are canonical, see "Decisions applied" | 0 min | Resolved by decision, not by paste. |
 | 5 | Diff `COMPANY_COLUMNS` / `CONTACT_COLUMNS` / `TOUCH_COLUMNS` against Batch B's migration | 3 min | The real lists were not readable from this session. |
-| 6 | Reconcile `docs/ICP-BRIEF.md` ($49/$99/$750) against the campaign offer ($89 + $500) | 5 min | Shared with two other repos. Not one batch's call. |
+| 6 | ~~Reconcile `docs/ICP-BRIEF.md` ($49/$99/$750) against the campaign offer ($89 + $500)~~ Done 2026-09-06: $89 + $500 everywhere | 0 min | Decided by Dovy, applied here. |
 
 **Not on the clock, because they are purchases and calendar time, not keyboard
 time:** buy the Instantly seat and 2 to 3 sending domains and start warmup (email
@@ -601,7 +603,9 @@ missing, rather than writing a touch against a made-up person. BLOCKED.md C-B3.
 B's six are different lists (BLOCKED.md C-B4). Mapping `interested` onto
 `hot_pain` rather than `curious` would silently change what every reply rate in
 the Friday brief means, so `engine/ledger.py` refuses any value B does not know
-and prints both vocabularies.
+and prints both vocabularies. *(Superseded 2026-09-06: this repo's six are now
+canonical and the ledger carries them; the seam is an identity pass-through with
+validation. See "Decisions applied" below.)*
 
 **Tests.** 103 before, 129 after. The 26 new ones are in
 `tests/test_ledger_contract.py`, and they do the one thing that would have caught
@@ -614,3 +618,97 @@ function binds against B's real signature before returning. Nothing connects to
 anything: B's client is built lazily, and none of its functions is ever called,
 only its signature read. The tests skip rather than fail when campaign-ledger is
 not checked out beside this repo.
+
+---
+
+## Decisions applied — 2026-09-06
+
+Four campaign-wide decisions from Dovy, applied to this repo on this date.
+Nothing sent, nothing connected to. The parallel campaign-ledger session landed
+its half (commit `8cb1869`, new enum and confirmed project) before the contract
+test here ran, so the bind test below ran for real rather than skipping.
+
+### 1. The ROI figures are modelled, not measured
+
+Roughly 9x, about 400 euro a month per team, payback in about 40 days: these come
+from a model that assumes a fixed amount of time saved per person per day. No
+customer has reported them and nothing has been measured. Every place that stated
+or implied otherwise was reworded, and the figures were kept as a worked example
+that says it is a model in the same breath.
+
+Where the wording changed:
+
+| File | Before | After |
+|---|---|---|
+| `sequences/email/en.md` | facts block listed the figures as facts; touch 3 said "Teams running it save somewhere around 400 euro a month" | facts block labels them MODELLED and bans "firms are saving" phrasing; touch 3 opens "it is a model, not a customer number. Nobody has measured this yet" and walks the assumption |
+| `sequences/linkedin/en.md` | facts block listed them as facts and said "the ROI numbers sit instead" of social proof; step 4 said "The firms running it are saving" | facts block labels them MODELLED; step 4 says "it is a model rather than a customer figure, because nobody has measured it yet" |
+| `sequences/linkedin/da.md` | same shape in Danish; trin 4 "De firmaer, der kører det, sparer" | facts block says MODELLEREDE, ikke målte; trin 4 "det er en model, ikke et kundetal, for ingen har målt det endnu" |
+| `sequences/linkedin/lt.md` | same shape in Lithuanian; 4 žingsnis "Įmonės, kurios tai naudoja, sutaupo" | facts block says MODELIUOTI, ne išmatuoti; 4 žingsnis "tai modelis, ne kliento duomenys, nes niekas to dar neišmatavo" |
+| `sequences/phone/en.md` | "What I do have is the numbers" | "What I do have is a model, not a customer number", plus a caller note: say the word model, never say measured |
+| `sequences/phone/da.md` | "Det, jeg har, er tallene" | "Det, jeg har, er en model, ikke et kundetal", plus the same caller note |
+| `sequences/phone/lt.md` | "Turiu skaičius" | "Turiu modelį, ne kliento skaičius", plus the same caller note |
+| `README.md` | no statement either way | new section: the figures are a model, not a measurement |
+| `AUDIT.md` | "safe to use as the proof point" | dated update: agreement between two documents is not measurement |
+| `BLOCKED.md` B9 | "corroborated in two independent places" | dated update saying what corroborated did and did not mean |
+| `RUN-REPORT.md` (above) | same "corroborated" line | reworded, with a pointer here |
+
+`config/hooks.yaml` never carried the figures, so it did not change. Danish and
+Lithuanian files keep their `NEEDS NATIVE CHECK` header and the Lithuanian stays
+in the formal Jūs. No em dash was introduced into any `sequences/` file.
+
+New test, `tests/test_sequences.py::test_the_roi_figures_are_framed_as_a_model_not_a_measurement`,
+runs once per sequence file: the quoted message text may not say firms or teams
+are saving the figures, and wherever it quotes the 400 euro figure it must use
+the word model in the same message.
+
+### 2. Price is $89 per seat per month plus $500 setup, everywhere
+
+`docs/ICP-BRIEF.md` said $49/seat design partner locked 12 months, $99/seat
+standard, $750 onboarding, and flagged the $49 rate as never founder-stated. The
+Offer table now reads $89/seat/month, min 10 seats, $500 one-off setup, free
+two-week pilot billing from day 14, with a one-line note that the earlier 49/99
+figures were retired on 2026-09-06. The proposals list strikes the $49 item.
+
+A repo-wide grep for 49, 99, 750, 89 and 500 as prices found the seven sequence
+files already on $89 + $500. The two A/B arm files `copy/hours.json` and
+`copy/capacity.json` still closed with "ten firms as design partners at half
+price", which is the retired offer; that line now describes the free two-week
+pilot. `README.md` no longer says the brief disagrees. The price test in
+`tests/test_sequences.py` also bans the Lithuanian forms and "half price".
+
+### 3. The six reply values in this repo are canonical
+
+`interested`, `not_now`, `not_a_fit`, `referred`, `objection`, `unsubscribe`.
+
+- `config/reply_taxonomy.yaml`: `canonical: true`, `version: canonical-2026-09-06`,
+  header rewritten to say so and keep the history.
+- `engine/ledger.py`: `_B_SENTIMENTS` (the ledger's old six) is gone, as is the
+  error that printed both lists. One `SENTIMENTS` tuple with the six; a sentiment
+  crosses the seam as itself; anything outside the six still raises
+  `LedgerVocabularyMismatch` with a message naming the six.
+- `sync_replies.py`: docstring and the `canonical: false` notice updated.
+- `tests/test_loaders.py`: the "honestly marked as reconstructed" test became
+  "marked canonical" and also checks the YAML ids equal `ledger.SENTIMENTS`.
+- `tests/test_ledger_contract.py`: the "refused with both lists" test is replaced
+  by three. One checks YAML, adapter tuple and ledger `_SENTIMENTS` agree. One
+  checks a value outside the six (including the ledger's retired `hot_pain`) is
+  refused and that the message mentions no second list. One binds every one of
+  the six against the real `record_reply` signature and enum. That last test
+  skips with a message naming the stale values if `campaign_db.py` on disk has not
+  been updated; verified by pointing `CAMPAIGN_DB_PATH` at the previous ledger
+  commit, where it skips as designed. Against the current ledger it passes.
+- `BLOCKED.md` C-B4 and B5 are marked resolved.
+
+### 4. Ledger project confirmed: `oqpeebtwtikdzorgouxd`
+
+`.env.example` now names the project, states that `campaign_db.py` reads
+`SUPABASE_URL` and `SUPABASE_SERVICE_KEY` (not `SUPABASE_SERVICE_ROLE_KEY`), and
+repeats that the product project `kngcxwcybozgqgnoweyt` is off limits. BLOCKED.md
+B1 carries a dated update: what remains is credentials and the migration, not a
+decision. No connection was made from this session.
+
+### Checks
+
+`python3 -m pytest -q`: **138 passed** (129 before; 8 new from the per-file ROI
+framing test, 2 net new in the ledger contract file, 1 replaced in loaders).
+Em-dash scan over `sequences/`: zero.

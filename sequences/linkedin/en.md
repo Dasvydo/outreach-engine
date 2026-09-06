@@ -36,12 +36,18 @@ https://teams.doviloop.dev/?utm_source=linkedin&utm_medium=dm&utm_campaign=teams
 
 $89 per seat per month plus a $500 setup fee covering the workshop, onboarding
 and setup. Teams of 10 and up. Free two week pilot, workshop and setup included,
-billing starts on day 14. Roughly 9x ROI, around 400 euro a month saved, payback
-in about 40 days. It works inside Outlook. It never sends anything on its own.
-It runs in Europe.
+billing starts on day 14. It works inside Outlook. It never sends anything on
+its own. It runs in Europe.
+
+The ROI figures (roughly 9x, around 400 euro a month, payback in about 40 days)
+are MODELLED, not measured. They come from a model that assumes a fixed amount
+of time saved per person per day. No customer has reported them. The copy may
+use them as a worked example, and only when it says so in the same breath.
+Never write that firms are saving, seeing, getting or reporting them.
 
 No testimonials and no named pilots exist. Do not invent either. Where social
-proof would normally sit, the ROI numbers sit instead.
+proof would normally sit, the copy says plainly that there is none yet and
+shows the model instead.
 
 ---
 
@@ -117,10 +123,11 @@ Short, one number, a reel, and an actual goodbye.
 > setup, no new app:
 > https://teams.doviloop.dev/?utm_source=linkedin&utm_medium=dm&utm_campaign=teams_q4&utm_content=global_4
 >
-> The firms running it are saving somewhere around 400 euro a month per team and
-> getting the setup cost back in about six weeks. Two week pilot is free and we
-> do the setup work, so the only thing it costs you up front is the workshop
-> afternoon.
+> One number, and it is a model rather than a customer figure, because nobody
+> has measured it yet: assume about twenty minutes a day back per person and a
+> team of ten works out to around 400 euro a month, with the setup cost back in
+> about six weeks. Two week pilot is free and we do the setup work, so the only
+> thing it costs you up front is the workshop afternoon.
 >
 > If the timing is wrong, it is wrong. Good luck with the season.
 

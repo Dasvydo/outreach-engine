@@ -28,7 +28,7 @@
       "day": 7,
       "subject": {"en": "Closing the loop", "da": "NEEDS_NATIVE_PROOFREAD", "lt": "NEEDS_NATIVE_PROOFREAD"},
       "body": {
-        "en": "{{firstName}} — I'll stop here.\n\nIf it's useful later: it runs inside the Outlook your team already uses, it never sends anything on its own, and it runs on European servers.\n\nWe're taking ten firms as design partners at half price. If {{companyName}} wants one of those places, reply and I'll hold it.\n\n{{sendingAccountFirstName}}",
+        "en": "{{firstName}} — I'll stop here.\n\nIf it's useful later: it runs inside the Outlook your team already uses, it never sends anything on its own, and it runs on European servers.\n\nThe first two weeks are free and include the workshop and the setup; billing only starts on day 14. If {{companyName}} wants to try it, reply and I'll set it up.\n\n{{sendingAccountFirstName}}",
         "da": "NEEDS_NATIVE_PROOFREAD", "lt": "NEEDS_NATIVE_PROOFREAD"
       }
     }

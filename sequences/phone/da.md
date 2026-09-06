@@ -129,8 +129,13 @@ tallet koster.
 Der er ingen navngivne kunder og ingen udtalelser endnu. Find ikke på nogen.
 
 > Jeg har ingen navne, jeg må bruge endnu, og jeg vil hellere sige det, end finde
-> på noget. Det, jeg har, er tallene: omkring 400 euro sparet om måneden pr.
-> team, og opstarten tjent hjem på cirka 40 dage.
+> på noget. Det, jeg har, er en model, ikke et kundetal: antag cirka tyve
+> minutter sparet om dagen pr. person, så lander et team på ti på omkring 400
+> euro om måneden, og opstarten er tjent hjem på cirka 40 dage. Det er en
+> antagelse, indtil piloten erstatter den med jeres egne tal.
+
+Sig ordet model. Sig aldrig, at tallene er målt, set eller rapporteret af nogen,
+for det er de ikke.
 
 ## Efter opkaldet
 

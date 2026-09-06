@@ -129,8 +129,13 @@ daugiau pasitikėjimo, nei kainuoja pats skaičius.
 Įvardytų klientų ir atsiliepimų dar nėra. Jų nesugalvokite.
 
 > Vardų, kuriuos galėčiau naudoti, dar neturiu, ir verčiau tai pasakysiu, nei ką
-> nors išgalvosiu. Turiu skaičius: apie 400 eurų sutaupoma per mėnesį komandai, o
-> įdiegimo kaina atsiperka maždaug per 40 dienų.
+> nors išgalvosiu. Turiu modelį, ne kliento skaičius: darant prielaidą, kad
+> kiekvienas žmogus sutaupo apie dvidešimt minučių per dieną, dešimties žmonių
+> komandai išeina apie 400 eurų per mėnesį, o įdiegimo kaina atsipirktų maždaug
+> per 40 dienų. Tai prielaida, kol bandymas jos nepakeis Jūsų pačių skaičiais.
+
+Sakykite žodį modelis. Niekada nesakykite, kad skaičiai buvo išmatuoti, matyti
+ar kieno nors patvirtinti, nes taip nebuvo.
 
 ## Po skambučio
 

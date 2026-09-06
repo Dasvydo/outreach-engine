@@ -43,11 +43,13 @@ clinics and patient data · enterprise with procurement.
 
 ## Offer
 
-| | Design partner (first 10) | Standard |
-|---|---|---|
-| Price | **$49/seat/mo**, locked 12 months | $99/seat/mo, min 10 seats |
-| Onboarding | Waived | $750, waived annually |
-| Exchange | Logo, case study, testimonial, monthly feedback call | — |
+| | Every customer |
+|---|---|
+| Price | **$89/seat/month**, min 10 seats |
+| Setup | **$500 one-off**, covers the workshop, the knowledge-base build and onboarding |
+| Pilot | Free two weeks with the workshop and setup included; billing starts on day 14 |
+
+> Pricing note, 2026-09-06: the earlier $49 design-partner / $99 standard seat rates and the $750 onboarding fee were retired on this date. $89 per seat per month plus $500 setup is the single campaign-wide price.
 
 **Delivered:** we build the knowledge base (fees, deadlines, checklists,
 engagement and policy terms) · a voice profile per person · 90-minute kickoff
@@ -88,4 +90,4 @@ Flagged so no project treats them as settled:
 
 - **The "capacity" framing** — reasoned from the prospect rejecting the ROI lever,
   but untested in market. **Highest-value thing to A/B first.**
-- **The $49 design-partner rate** — never founder-stated.
+- ~~The $49 design-partner rate~~ — retired 2026-09-06; the price is $89/seat/month + $500 setup, see the Offer table.

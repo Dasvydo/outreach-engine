@@ -83,6 +83,10 @@ authority, so all new copy in this batch uses $89 + $500 and the 2-week pilot.
 `ad-engine` and rewriting a locked shared brief from inside one batch is not this
 session's call. Logged in `BLOCKED.md` for Dovy to reconcile.
 
+*Update 2026-09-06:* reconciled. Dovy set the price campaign-wide at $89/seat/month
+plus $500 setup; `docs/ICP-BRIEF.md` now says so and the $49/$99/$750 figures are
+retired.
+
 ---
 
 ## 2. `icp_finder.py` — DOES NOT EXIST HERE (but its output does)
@@ -242,8 +246,11 @@ Dovy Vinickis, with the header "NOTHING HAS BEEN SENT."
 Three things were taken from it, and one was deliberately not:
 
 - **Taken: the ROI figures.** "roughly 9x ROI", "payback in about 40 days". These
-  match `00-START-HERE.md` exactly, so they are corroborated from two independent
-  places and are safe to use as the proof point where no testimonial exists.
+  match `00-START-HERE.md` exactly, so the two documents agree on the numbers.
+  *Update 2026-09-06:* agreement between two documents is not measurement. Dovy
+  confirmed the figures are MODELLED from assumed time saved, not observed with
+  any customer, and every sequence file now frames them as a model rather than as
+  a proof point.
 - **Taken: the voice.** Short sentences, plain verbs, the hook drawn from something
   actually on the prospect's own website. The new sequences follow it.
 - **Taken: proof that Danish copy is written for this ICP already.** The DACAS and

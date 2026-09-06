@@ -124,8 +124,13 @@ number costs.
 There are no named customers and no testimonials yet. Do not invent either.
 
 > I do not have names I can use yet, and I would rather tell you that than make
-> something up. What I do have is the numbers: around 400 euro a month saved per
-> team, and the setup cost back in about 40 days.
+> something up. What I do have is a model, not a customer number: assume about
+> twenty minutes a day back per person, and a team of ten works out to around
+> 400 euro a month, with the setup cost back in about 40 days. That is an
+> assumption until the pilot replaces it with your own figures.
+
+Say the word model. Never say the figures were measured, seen or reported by
+anyone, because they were not.
 
 ## After the call
 

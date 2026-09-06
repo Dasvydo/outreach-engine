@@ -179,12 +179,52 @@ def test_no_ai_flavoured_phrasing_in_the_copy():
 
 
 def test_the_copy_uses_the_campaign_offer_not_the_older_locked_brief():
-    """docs/ICP-BRIEF.md still says $49/$99 + $750. The campaign says $89 + $500.
-
-    00-START-HERE.md is the campaign authority and is dated later, so the copy
-    follows it. See BLOCKED.md B8. This test fails if the older numbers reappear.
+    """The price is $89 per seat per month plus $500 setup, everywhere. The
+    older $49 / $99 seat rates and $750 onboarding were retired on 2026-09-06
+    (BLOCKED.md B8, resolved). This test fails if they reappear in the copy.
     """
     for relative in ALL_FILES:
         text = _message_text(relative)
-        for stale in ("$49", "$99", "$750", "49 dollar", "99 dollar", "750 dollar"):
+        for stale in ("$49", "$99", "$750", "49 dollar", "99 dollar", "750 dollar",
+                      "49 doleri", "99 doleri", "750 doleri", "half price"):
             assert stale not in text, f"{relative} quotes the superseded price {stale!r}"
+
+
+# Phrasings that present the modelled ROI figures as something observed with
+# customers. The figures may appear as a worked example framed as a model; they
+# may never be attributed to firms, teams or customers as a result.
+MEASURED_CLAIMS = {
+    "linkedin/en.md": ("firms running it are saving", "teams running it save",
+                       "customers save", "customers are saving"),
+    "email/en.md": ("firms running it are saving", "teams running it save",
+                    "customers save", "customers are saving"),
+    "phone/en.md": ("firms running it are saving", "teams running it save",
+                    "customers save", "what i do have is the numbers"),
+    "linkedin/da.md": ("firmaer, der kører det, sparer", "kunder sparer",
+                       "kunderne sparer"),
+    "phone/da.md": ("firmaer, der kører det, sparer", "kunder sparer",
+                    "det, jeg har, er tallene"),
+    "linkedin/lt.md": ("įmonės, kurios tai naudoja, sutaupo", "klientai sutaupo"),
+    "phone/lt.md": ("įmonės, kurios tai naudoja, sutaupo", "klientai sutaupo",
+                    "turiu skaičius:"),
+}
+
+# The word that has to sit next to the figures, per language, so a reader is
+# told in the same message that they are looking at a model.
+MODEL_WORD = {"en": "model", "da": "model", "lt": "model"}
+
+
+@pytest.mark.parametrize("relative", ALL_FILES)
+def test_the_roi_figures_are_framed_as_a_model_not_a_measurement(relative):
+    """Decided 2026-09-06: roughly 9x, about 400 euro a month and payback in
+    about 40 days are MODELLED from assumed time saved, not measured with any
+    customer. The message text may quote them only as a model, and may never
+    say that firms are saving or seeing them."""
+    text = _message_text(relative)
+    for phrase in MEASURED_CLAIMS[relative]:
+        assert phrase not in text, (
+            f"{relative} presents the modelled ROI figures as measured: {phrase!r}")
+    if "400 euro" in text or "400 eurų" in text:
+        _, locale = EXPECTED[relative]
+        assert MODEL_WORD[locale] in text, (
+            f"{relative} quotes the 400 euro figure without calling it a model")
