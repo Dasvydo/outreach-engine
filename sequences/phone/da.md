@@ -26,7 +26,7 @@ til en, du lige har talt med, så kilden og mediet er den kanal, der faktisk
 sendte klikket. Kampagne og indhold er uændrede:
 
 ```
-https://teams.doviloop.dev/?utm_source=phone&utm_medium=call&utm_campaign=teams_q4&utm_content=dk_1
+https://teams.doviloop.dev/?utm_source=phone&utm_medium=call&utm_campaign=teams_q4&utm_content=dk_1&source=outreach
 ```
 
 Trinnummeret er det opkald i rækken, du er nået til. Første opkald er `dk_1`,

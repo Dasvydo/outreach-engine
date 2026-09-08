@@ -20,7 +20,7 @@ to someone you just spoke to, so source and medium carry the channel that
 actually sent the click. Campaign and content are unchanged:
 
 ```
-https://teams.doviloop.dev/?utm_source=phone&utm_medium=call&utm_campaign=teams_q4&utm_content=global_1
+https://teams.doviloop.dev/?utm_source=phone&utm_medium=call&utm_campaign=teams_q4&utm_content=global_1&source=outreach
 ```
 
 The step number is which call in the run you are on. First call is `global_1`,

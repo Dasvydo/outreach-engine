@@ -25,7 +25,7 @@ pasikalbėję, todėl šaltinis ir terpė nurodo kanalą, kuris iš tikrųjų at
 paspaudimą. Kampanija ir turinys nekeičiami:
 
 ```
-https://teams.doviloop.dev/?utm_source=phone&utm_medium=call&utm_campaign=teams_q4&utm_content=lt_1
+https://teams.doviloop.dev/?utm_source=phone&utm_medium=call&utm_campaign=teams_q4&utm_content=lt_1&source=outreach
 ```
 
 Žingsnio numeris yra tas skambutis iš eilės, kurį atliekate. Pirmas skambutis
