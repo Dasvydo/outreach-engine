@@ -190,22 +190,46 @@ python -c "import sys; sys.path.insert(0,'.'); from engine import ledger; print(
 not `SUPABASE_SERVICE_ROLE_KEY`, deliberately). Nothing in this repo holds
 either, and nothing here connects to Supabase directly.
 
-### Running the tests: do not set PYTHONPATH for the full suite
-
-The suite is **138 passed** on its own and **3 failed plus 9 errors** with
-`campaign-ledger/src` on the path. Nothing is broken. Test fixtures call
-`engine.ledger.use_shim_dir()`, which raises
-`RuntimeError: use_shim_dir() must never run against the real ledger`
-(`engine/ledger.py:725`) so a test run can never write to a real database.
-The guard is correct and stays.
+### Running the tests: do not set PYTHONPATH
 
 ```bash
-python -m pytest tests/ -q                                            # 138 passed, PYTHONPATH unset
-PYTHONPATH=/path/to/campaign-ledger/src \
-  python -m pytest tests/test_ledger_contract.py -q                   # 28 passed, the seam itself
+pip install pytest                  # NOT in requirements.txt, by design - see below
+python -m pytest tests/ -q          # 138 passed, PYTHONPATH UNSET
 ```
 
-Both verified 2026-09-08.
+`requirements.txt` deliberately carries runtime dependencies only, and says so
+on its first line. `pip install -r requirements.txt` alone therefore leaves you
+without pytest, and every `python -m pytest` line in this README fails with
+`No module named pytest` until you install it.
+
+**The full suite must run with `PYTHONPATH` unset.** With `campaign-ledger/src`
+on it the suite reports 3 failed and 9 errors. Nothing is broken: test fixtures
+call `engine.ledger.use_shim_dir()`, which deliberately raises
+`RuntimeError: use_shim_dir() must never run against the real ledger`
+(`engine/ledger.py:725`) so a test run can never write to a real database. That
+guard is correct and stays.
+
+**The contract tests do not use `PYTHONPATH` at all**, and this is the part worth
+understanding before changing either side. `tests/test_ledger_contract.py` finds
+Batch B's module *by file path* - `../campaign-ledger/src/campaign_db.py`, or
+wherever `CAMPAIGN_DB_PATH` points - and loads it under a different module name
+(`_batch_b_campaign_db`). So a bare `import campaign_db` still fails,
+`engine.ledger._real` stays `None`, and the shim guard above is never tripped.
+That is what lets the same `pytest` run exercise the real client and the shim
+without them fighting.
+
+Consequence: the contract tests need **campaign-ledger checked out beside this
+repo** (the sibling layout in `campaign-n8n/ops/NEW-PC-SETUP.md`), not an
+environment variable. Without it they **skip** rather than fail, so a developer
+with only this repo still gets a green suite - but 28 assertions about the seam
+quietly did not run.
+
+```bash
+python -m pytest tests/test_ledger_contract.py -q     # 28 passed with the sibling present
+CAMPAIGN_DB_PATH=/elsewhere/campaign_db.py python -m pytest tests/test_ledger_contract.py -q
+```
+
+All verified 2026-09-08.
 
 ## Campaign commands
 
