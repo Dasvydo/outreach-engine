@@ -3,6 +3,17 @@
 Cold outreach for DoviLoop, built from official registries rather than bought
 lists. Firms go in, a gated and enriched Instantly campaign comes out.
 
+> **Campaign-wide documents live in `campaign-n8n/ops/`.** This repo is one of six
+> batches; the status of all of them, the setup guide for a new machine, the
+> decisions taken and what is still waiting on a human are kept together there:
+> `ops/STATUS.md`, `ops/NEW-PC-SETUP.md`, `ops/DECISIONS.md`, `ops/NIGHT-RUN.md`,
+> `ops/HANDOFF.md`.
+>
+> The six repos must be cloned as **siblings under one parent directory** -
+> several tools reach across them by relative path, and this repo's own contract
+> tests locate `campaign-ledger` that way.
+
+
 Sibling to `reel-engine` and `ad-engine`; all three work from the same locked
 brief in `docs/ICP-BRIEF.md`.
 
