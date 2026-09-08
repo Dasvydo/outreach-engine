@@ -167,6 +167,46 @@ lists/{market}-YYYY-MM-DD.csv        the dated market lists
 fixtures/                            stand-ins for the absent API keys
 ```
 
+## The ledger seam
+
+`engine/ledger.py` writes companies, contacts and touches into Batch B's
+`campaign.companies`, `campaign.contacts` and `campaign.touches` through its
+`campaign_db.py`. The import is defensive: while `campaign_db` is not
+importable, everything goes to a local JSONL shim instead, which is what made
+this repo buildable before Batch B landed.
+
+`campaign_db.py` lives in the sibling `campaign-ledger` repo. Put its `src` on
+the Python path to switch from the shim to the real ledger:
+
+```bash
+export PYTHONPATH=/path/to/campaign-ledger/src
+
+python -c "import sys; sys.path.insert(0,'.'); from engine import ledger; print(ledger.using_real_ledger())"
+# False -> writing to the local shim
+# True  -> writing to campaign.* in Supabase
+```
+
+`campaign_db.py` reads `SUPABASE_URL` and `SUPABASE_SERVICE_KEY` itself (note:
+not `SUPABASE_SERVICE_ROLE_KEY`, deliberately). Nothing in this repo holds
+either, and nothing here connects to Supabase directly.
+
+### Running the tests: do not set PYTHONPATH for the full suite
+
+The suite is **138 passed** on its own and **3 failed plus 9 errors** with
+`campaign-ledger/src` on the path. Nothing is broken. Test fixtures call
+`engine.ledger.use_shim_dir()`, which raises
+`RuntimeError: use_shim_dir() must never run against the real ledger`
+(`engine/ledger.py:725`) so a test run can never write to a real database.
+The guard is correct and stays.
+
+```bash
+python -m pytest tests/ -q                                            # 138 passed, PYTHONPATH unset
+PYTHONPATH=/path/to/campaign-ledger/src \
+  python -m pytest tests/test_ledger_contract.py -q                   # 28 passed, the seam itself
+```
+
+Both verified 2026-09-08.
+
 ## Campaign commands
 
 ```bash
