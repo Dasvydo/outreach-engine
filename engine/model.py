@@ -43,7 +43,19 @@ class Contact:
     last_name: str = ""
     title: str = ""
     linkedin: str = ""
-    verified: bool = False            # passed a bounce check
+
+    # Passed a bounce check. NOT PERSISTED, and currently never set: nothing in
+    # this repo writes it and campaign.contacts has no column for it, so
+    # engine/ledger.py's upsert_contact cannot forward it. Batch B accepts
+    # exactly full_name, role_guess, linkedin_url, email and email_source
+    # alongside company_id and market. Every other Contact field IS forwarded -
+    # first_name and last_name are joined into full_name, title becomes
+    # role_guess, and firm is decomposed into company_id and market - so this is
+    # the only one that would be lost, and it is lost from a value that is
+    # always False today. Setting it and expecting it to reach the ledger is the
+    # trap this comment exists to prevent: adding a column is Batch B's call
+    # (ops/DECISIONS.md B-03).
+    verified: bool = False
 
     @property
     def language(self) -> str:
