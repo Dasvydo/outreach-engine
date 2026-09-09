@@ -76,6 +76,28 @@ def test_every_link_points_at_the_campaign_landing_page(relative):
             assert "utm_campaign=teams_q4" in url, url
 
 
+PHONE_FILES = sorted(f for f in ALL_FILES if f.startswith("phone/"))
+
+
+@pytest.mark.parametrize("relative", PHONE_FILES)
+def test_phone_links_carry_the_outreach_source(relative):
+    """Regression, fixed 2026-09-08. A phone link missing &source=outreach is
+    attributed to 'direct' by the landing page, so the call that earned the
+    click is credited to nothing.
+
+    Only the filled phone URL is checked. The spec's UTM template quoted just
+    above it in each file is a linkedin-medium example and carries no source
+    parameter by design.
+    """
+    body = (SEQ / relative).read_text(encoding="utf-8")
+    phone_urls = [u for u in re.findall(r"https?://\S+", body)
+                  if "utm_source=phone" in u]
+    assert phone_urls, f"{relative} has no filled phone UTM link"
+    for url in phone_urls:
+        assert "&source=outreach" in url, \
+            f"{relative} phone link would attribute to 'direct': {url}"
+
+
 @pytest.mark.parametrize("relative", [f for f in ALL_FILES if f.endswith(("da.md", "lt.md"))])
 def test_danish_and_lithuanian_are_headed_needs_native_check(relative):
     first = (SEQ / relative).read_text(encoding="utf-8").splitlines()[0]
