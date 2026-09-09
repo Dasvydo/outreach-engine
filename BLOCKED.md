@@ -443,7 +443,7 @@ across 40 firms is 40 company upserts, not 200.
 
 ---
 
-## C-B4 — the six reply values in this repo are not the six in the ledger
+## C-B4 — the six reply values in this repo are not the six in the ledger — RESOLVED 2026-09-06
 
 **Missing:** agreement. B declares `campaign.reply_sentiment` as
 
