@@ -699,7 +699,7 @@ pilot. `README.md` no longer says the brief disagrees. The price test in
   commit, where it skips as designed. Against the current ledger it passes.
 - `BLOCKED.md` C-B4 and B5 are marked resolved.
 
-### 4. Ledger project confirmed: `oqpeebtwtikdzorgouxd`
+### 4. Ledger project confirmed: `yheilbuunzdugfnermfb`
 
 `.env.example` now names the project, states that `campaign_db.py` reads
 `SUPABASE_URL` and `SUPABASE_SERVICE_KEY` (not `SUPABASE_SERVICE_ROLE_KEY`), and

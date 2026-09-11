@@ -24,7 +24,7 @@ run and can be imported later without re-running discovery.
 migration himself, drops `campaign_db.py` on the path, sets `CAMPAIGN_DB_URL`. Then
 `python3 -m engine.icp_finder --market dk --commit` writes for real.
 
-**Update 2026-09-06:** the ledger project is confirmed as `oqpeebtwtikdzorgouxd`
+**Update 2026-09-06:** the ledger project is confirmed as `yheilbuunzdugfnermfb`
 (lead-pipeline / DSD project, schema `campaign`). `.env.example` names it. What
 remains is credentials and the migration, not a decision: `campaign_db.py` reads
 `SUPABASE_URL` and `SUPABASE_SERVICE_KEY`, and this container's ambient
@@ -501,4 +501,4 @@ resolution lines; this is the index.
 | ROI figures are modelled, not measured | B9 | seven sequence files reframed; README and AUDIT say so; new test guards it |
 | Price is $89/seat/month + $500 setup, everywhere | B8 | `docs/ICP-BRIEF.md` updated with a retirement note; `copy/*.json` half-price line replaced |
 | The six reply values here are canonical | B5, C-B4 | YAML `canonical: true`; adapter is identity plus validation; contract test binds all six |
-| Ledger project is `oqpeebtwtikdzorgouxd` | B1 | `.env.example` names it and the two variables the ledger client actually reads |
+| Ledger project is `yheilbuunzdugfnermfb` | B1 | `.env.example` names it and the two variables the ledger client actually reads |
