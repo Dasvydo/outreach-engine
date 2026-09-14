@@ -100,14 +100,68 @@ def test_no_danish_address_survives_into_a_real_payload():
         assert not email.endswith(".dk"), f"{email} reached the Instantly payload"
 
 
-def test_only_the_global_market_is_an_email_market():
-    """Lithuania is excluded too, for a different reason: unverified addresses."""
-    assert load_instantly.EMAIL_MARKETS == ("global",)
+def test_lithuania_is_now_an_email_market():
+    """Changed 2026-09-14 on Dovy's instruction, and the law agrees.
+
+    LT was previously held back for unverified addresses. AI Arc now supplies
+    verified contacts, and Elektroniniu rysiu istatymas Art. 81(1) as amended by
+    Law XV-815 of 2026-04-16 carves legal persons out of the prior-consent rule,
+    so Lithuania is the one market here that got easier rather than harder.
+    """
+    assert "lt" in load_instantly.EMAIL_MARKETS
     lt = _contact(market="lt", country="LT", work_email="rasa@pavyzdys.lt",
                   phone="+370 600 00001")
     keep, refused = load_instantly.eligible([lt])
+    assert [c.work_email for c in keep] == ["rasa@pavyzdys.lt"], refused
+
+
+def test_the_united_states_is_not_in_the_email_allowlist():
+    """Excluded by choice rather than by law - Dovy, 2026-09-14."""
+    assert "US" not in load_instantly.EMAIL_COUNTRIES
+    us = _contact(market="global", country="US",
+                  work_email="hank@example.com", phone="+1 850 000 0001")
+    keep, refused = load_instantly.eligible([us])
     assert keep == []
-    assert "not an email market" in refused[0][1]
+    assert "allowlist" in refused[0][1]
+
+
+def test_the_netherlands_is_refused_until_counsel_confirms():
+    """Telecommunicatiewet art. 11.7(1) has covered business recipients since
+    2009 and needs provable prior consent, with KvK register data expressly
+    excluded as a basis for it. Unlike Denmark this HAS a switch, because it is
+    a research finding rather than settled advice - but it defaults closed."""
+    assert load_instantly.NL_CONSENT_CONFIRMED is False
+    nl = _contact(market="global", country="NL",
+                  work_email="jan@voorbeeld.nl", phone="+31 20 000 0001")
+    keep, refused = load_instantly.eligible([nl])
+    assert keep == []
+    assert "11.7" in refused[0][1]
+
+
+def test_the_dutch_switch_actually_opens_when_set(monkeypatch):
+    """A gate nobody can open is a deleted market, not a gate. Prove the switch
+    works so that turning it on is a decision rather than an excavation."""
+    monkeypatch.setattr(load_instantly, "NL_CONSENT_CONFIRMED", True)
+    nl = _contact(market="global", country="NL",
+                  work_email="jan@voorbeeld.nl", phone="+31 20 000 0001")
+    keep, _ = load_instantly.eligible([nl])
+    assert [c.work_email for c in keep] == ["jan@voorbeeld.nl"]
+
+
+def test_denmark_has_no_such_switch_and_never_will():
+    """The contrast that matters: NL is gated, DK is excluded. Setting the Dutch
+    flag must not create a path for a Danish address."""
+    monkeypatched = dict(vars(load_instantly))
+    assert not any("NL_CONSENT" in k and "DK" in k for k in monkeypatched)
+    dk = _contact(market="global", country="DK",
+                  work_email="mette@eksempel.dk", phone="+45 20 00 00 01")
+    load_instantly.NL_CONSENT_CONFIRMED = True
+    try:
+        keep, refused = load_instantly.eligible([dk])
+    finally:
+        load_instantly.NL_CONSENT_CONFIRMED = False
+    assert keep == []
+    assert refused[0][1].startswith("Danish exclusion")
 
 
 def test_the_exclusion_has_no_off_switch():
