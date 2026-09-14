@@ -118,10 +118,19 @@ def test_the_newer_microsoft_mx_endpoint_is_recognised():
 
     Found on 2026-09-03 by probing 84 real ICP domains: redmark.dk and vbtm.nl
     both run Microsoft 365 on the newer endpoint and were being dropped.
+
+    Asserted through the public classifier rather than against the pattern table,
+    so it keeps holding after the 2026-09-14 rewrite from substring matching to
+    anchored per-host matching. The real invariant is the verdict, not the shape
+    of the table that produces it.
     """
-    from engine.enrich import Provider, _SIGNATURES
-    assert any(needle == ".mx.microsoft" and provider is Provider.MICROSOFT
-               for needle, provider in _SIGNATURES)
+    from engine.enrich import Provider, classify_host
+
+    for host in ("redmark-dk.r-v1.mx.microsoft", "vbtm-nl.x-v1.mx.microsoft"):
+        assert classify_host(host)[0] is Provider.MICROSOFT, host
+
+    # Anchored, so a lookalike that merely contains the string is not Microsoft.
+    assert classify_host("evil-mx.microsoft.attacker.net")[0] is not Provider.MICROSOFT
 
 
 # --- soft signals ---------------------------------------------------------

@@ -203,6 +203,29 @@ def test_mail_provider_becomes_uses_m365_the_way_the_mx_gate_decides():
     assert ledger.uses_m365(Provider.OTHER) is False
     assert ledger.uses_m365(Provider.UNKNOWN) is None
     assert ledger.uses_m365(None) is None
+
+    # GATEWAY, added 2026-09-14, is the second undecidable value. A domain behind
+    # Mimecast or Proofpoint is most likely Microsoft underneath, so writing
+    # False would put a probably-wrong fact in the campaign's permanent record.
+    assert ledger.uses_m365(Provider.GATEWAY) is None
+    assert ledger.uses_m365(Provider.GATEWAY.value) is None
+
+
+def test_every_provider_value_maps_deliberately():
+    """Adding a Provider member must be a deliberate decision here, not a silent
+    fall-through to False. This fails the build when someone adds one."""
+    decided = {
+        Provider.MICROSOFT: True,
+        Provider.GOOGLE: False,
+        Provider.OTHER: False,
+        Provider.UNKNOWN: None,
+        Provider.GATEWAY: None,
+    }
+    assert set(decided) == set(Provider), (
+        "a Provider member has no decided uses_m365 mapping - choose one "
+        "explicitly rather than letting it default to False")
+    for provider, expected in decided.items():
+        assert ledger.uses_m365(provider) is expected, provider
     assert ledger.company_kwargs(**FINDER_CALL)["uses_m365"] is True
 
 

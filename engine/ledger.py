@@ -307,22 +307,31 @@ def _norm_domain(domain: Any) -> str:
 def uses_m365(mail_provider: Any) -> bool | None:
     """`mail_provider` -> B's boolean `uses_m365`, by the repo's own MX gate.
 
-    The gate in `icp_finder.run()` passes a firm when
-    `result.provider is Provider.MICROSOFT` and nothing else, so that is exactly
-    the test here. UNKNOWN is the one value that must not become False: it means
-    NXDOMAIN, no MX, or a failed lookup - "we could not tell", not "not
-    Microsoft" - and B's column is nullable precisely so that stays sayable.
+    The gate passes a firm when `result.provider is Provider.MICROSOFT` and
+    nothing else, so that is exactly the test here.
+
+    TWO values must not become False, because both mean "we could not tell"
+    rather than "not Microsoft", and B's column is nullable precisely so that
+    stays sayable:
+
+      UNKNOWN - NXDOMAIN, no MX, or a failed lookup.
+      GATEWAY - a security gateway (Mimecast, Proofpoint, MessageLabs) fronts
+                the domain and hides the platform behind it. Added 2026-09-14.
+                Writing False here would assert, in the campaign's permanent
+                record, that a firm is not on Microsoft when the most likely
+                truth is that it is - `engine/enrich.py` has the measurements.
     """
     if mail_provider is None:
         return None
     try:  # the enum when it is available, its string value when it is not
         from engine.enrich import Provider
-        microsoft, unknown = Provider.MICROSOFT.value, Provider.UNKNOWN.value
+        microsoft = Provider.MICROSOFT.value
+        undecidable = {Provider.UNKNOWN.value, Provider.GATEWAY.value}
     except Exception:  # pragma: no cover - only if dnspython is missing
-        microsoft, unknown = "microsoft", "unknown"
+        microsoft, undecidable = "microsoft", {"unknown", "gateway"}
     value = getattr(mail_provider, "value", mail_provider)
     value = str(value).strip().lower()
-    if not value or value == unknown:
+    if not value or value in undecidable:
         return None
     return value == microsoft
 
