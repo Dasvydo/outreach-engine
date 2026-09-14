@@ -1,0 +1,147 @@
+# How an external lead source's vertical labels map onto this repo's locked
+# VERTICALS. Edit this file rather than the importer.
+#
+# engine/model.py declares VERTICALS = (accounting, administrative, insurance)
+# and engine/gate.py hard-rejects anything else, so a source label that does not
+# appear here costs you the whole row.
+#
+# Lookup is case-insensitive; the label is lowercased and stripped, and internal
+# runs of whitespace, hyphens and underscores are collapsed to a single space.
+
+# --------------------------------------------------------------------------
+# Unambiguous. Source label -> canonical vertical.
+# --------------------------------------------------------------------------
+direct:
+  accounting: accounting
+  accountancy: accounting
+  accountant: accounting
+  accountants: accounting
+  bookkeeping: accounting
+  book keeping: accounting
+  audit: accounting
+  auditing: accounting
+  tax: accounting
+  tax advisory: accounting
+  revision: accounting              # da
+  revisor: accounting               # da
+  apskaita: accounting              # lt
+  boekhouding: accounting           # nl
+  accountancykantoor: accounting    # nl
+
+  insurance: insurance
+  insurance broker: insurance
+  insurance brokerage: insurance
+  insurance agency: insurance
+  broker: insurance
+  forsikring: insurance             # da
+  draudimas: insurance              # lt
+  verzekering: insurance            # nl
+  verzekeringsadviseur: insurance   # nl
+
+  administrative: administrative
+  admin: administrative
+  housing admin: administrative
+  housing administration: administrative
+  property administration: administrative
+  property management: administrative
+  hoa: administrative
+  hoa management: administrative
+  community association management: administrative
+  ejendomsadministration: administrative   # da
+  boligadministration: administrative      # da
+  administravimas: administrative          # lt
+  vve beheer: administrative               # nl
+  vastgoedbeheer: administrative           # nl
+
+# --------------------------------------------------------------------------
+# Ambiguous. One source label covers more than one real business.
+#
+# 'real estate' is the live case, measured against Dovy's own Drive exports on
+# 2026-09-14: it was 7 of 12 rows in leads_2026-08-18.csv and 8 of 15 in
+# leads_2026-08-11.csv, and it covers two different companies.
+#
+#   property administrators / HOA managers  -> ICP. DACAS, Real Administration,
+#       Cobblestone, R.E.M. Residential, Bay Management, IPM Association Services.
+#   estate agents and brokerages            -> NOT ICP. They sell and let homes.
+#       A&M Bolig, Aarhus Maeglerne, LokalBolig, Corcoran Perry.
+#
+# Decision: match `signals` against the company name plus the notes field. A hit
+# on `administrative` wins; a hit on `exclude` rejects; anything else goes to the
+# review file rather than being guessed at in either direction.
+# --------------------------------------------------------------------------
+ambiguous:
+  real estate:
+    default: review
+    signals:
+      administrative:
+        - administration
+        - administrationscenter
+        - administrationshus
+        - boligadministration
+        - ejendomsadministration
+        - property management
+        - property manager
+        - management group
+        - association management
+        - community association
+        - hoa
+        - condo
+        - residential management
+        - lettings management
+        - block management
+        - managing agent
+        - vve
+        - vastgoedbeheer
+        - administravimas
+        - facility management
+      exclude:
+        - maegler
+        - maeglerne
+        - ejendomsmaegler
+        - estate agent
+        - estate agents
+        - realtor
+        - realty
+        - brokerage
+        - sales and lettings
+        - makelaar
+        - makelaardij
+        - nekilnojamojo turto agentura
+
+  property:
+    default: review
+    signals:
+      administrative:
+        - administration
+        - management
+        - hoa
+        - condo
+        - vve
+      exclude:
+        - sales
+        - estate agent
+        - makelaar
+
+# --------------------------------------------------------------------------
+# Labels seen in the wild that are simply out of ICP. Listed explicitly so the
+# importer can reject them with a named reason rather than a shrug.
+# --------------------------------------------------------------------------
+reject:
+  - legal
+  - law
+  - law firm
+  - advokat
+  - consulting
+  - management consulting
+  - it
+  - software
+  - saas
+  - marketing
+  - recruitment
+  - staffing
+  - logistics
+  - freight
+  - construction
+  - retail
+  - healthcare
+  - education
