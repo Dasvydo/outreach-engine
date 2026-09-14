@@ -2,6 +2,8 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+import pytest
+
 from engine.enrich import Provider
 from engine.gate import evaluate, partition, triage
 from engine.model import Firm
@@ -119,3 +121,38 @@ def test_triage_separates_the_parked_from_the_rejected():
     p_kept, p_notkept = partition([goog, ms, gw, tiny])
     assert p_kept == kept
     assert len(p_notkept) == len(parked) + len(rejected)
+
+
+# --------------------------------------------------------------------------
+# The gateway second look, added 2026-09-14
+# --------------------------------------------------------------------------
+
+def test_the_autodiscover_probe_only_ever_promotes(monkeypatch):
+    """A positive-only signal. Measured: kpmg.nl is a Microsoft shop with NO
+    autodiscover CNAME, so absence proves nothing and must never demote."""
+    from engine import enrich
+    from engine.enrich import MXResult, Unresolved, resolve_gateway
+
+    gw = MXResult("x.nl", Provider.GATEWAY, ("mx.pphosted.com",),
+                  Unresolved.NONE, "Proofpoint")
+
+    monkeypatch.setattr(enrich, "autodiscover_says_microsoft", lambda d, timeout=5.0: False)
+    assert resolve_gateway(gw).provider is Provider.GATEWAY
+
+    monkeypatch.setattr(enrich, "autodiscover_says_microsoft", lambda d, timeout=5.0: True)
+    promoted = resolve_gateway(gw)
+    assert promoted.provider is Provider.MICROSOFT
+    assert "behind Proofpoint" in promoted.vendor
+    assert promoted.hosts == gw.hosts, "the MX evidence is preserved, not overwritten"
+
+
+def test_the_probe_never_touches_a_domain_the_mx_already_placed(monkeypatch):
+    """Google stays Google. The second look is for the undecided only."""
+    from engine import enrich
+    from engine.enrich import MXResult, resolve_gateway
+
+    monkeypatch.setattr(enrich, "autodiscover_says_microsoft",
+                        lambda d, timeout=5.0: pytest.fail("must not be probed"))
+    for provider in (Provider.GOOGLE, Provider.MICROSOFT, Provider.OTHER, Provider.UNKNOWN):
+        result = MXResult("x.nl", provider, ("mx.example.net",))
+        assert resolve_gateway(result).provider is provider

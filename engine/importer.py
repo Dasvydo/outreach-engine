@@ -393,15 +393,21 @@ def _mx_lookup(domains: list[str], workers: int = 12, timeout: float = 6.0
     killing the run.
     """
     from concurrent.futures import ThreadPoolExecutor
-    from engine.enrich import classify
+    from engine.enrich import classify, resolve_gateway
+
+    def look(d: str):
+        # The gateway second look costs one extra DNS query and is paid only by
+        # the domains the MX could not place, so it is done here rather than
+        # inside classify(). It can only promote to Microsoft; a domain it
+        # cannot confirm stays parked for review.
+        return resolve_gateway(classify(d, timeout=timeout), timeout=timeout)
 
     unique = sorted({d for d in domains if d})
     out: dict[str, Any] = {}
     if not unique:
         return out
     with ThreadPoolExecutor(max_workers=workers) as pool:
-        for domain, result in zip(unique, pool.map(
-                lambda d: classify(d, timeout=timeout), unique)):
+        for domain, result in zip(unique, pool.map(look, unique)):
             out[domain] = result
     return out
 

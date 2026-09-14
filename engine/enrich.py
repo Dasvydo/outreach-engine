@@ -212,6 +212,55 @@ def _verdict(ordered_hosts: list[str]) -> tuple[Provider, str, tuple[tuple[str, 
     return primary, vendor, per_host
 
 
+def autodiscover_says_microsoft(domain: str, timeout: float = 5.0) -> bool:
+    """Does `autodiscover.<domain>` CNAME to Microsoft's endpoint?
+
+    A POSITIVE-ONLY signal, and the distinction matters. Exchange Online tenants
+    are told to publish `autodiscover.<domain> -> autodiscover.outlook.com`, so a
+    hit is strong evidence of Microsoft mail even when the MX says Mimecast.
+    A miss proves nothing at all: measured 2026-09-14, `kpmg.nl` is a Microsoft
+    shop with NO autodiscover CNAME, while `bbc.co.uk` points autodiscover at its
+    own host. So this can only ever promote a domain, never demote one.
+
+    Why this works when SPF does not: TXT lookups time out from this container
+    against every resolver tried, but CNAME lookups succeed. Verified against
+    addere.dk and github.com (both -> autodiscover.outlook.com) with no false
+    positive on anthropic.com, which runs Google Workspace and returns NXDOMAIN.
+    """
+    domain = domain.strip().lower().removeprefix("www.")
+    if not domain:
+        return False
+    resolver = dns.resolver.Resolver()
+    resolver.lifetime = timeout
+    resolver.timeout = timeout
+    try:
+        answers = resolver.resolve(f"autodiscover.{domain}", "CNAME")
+    except dns.exception.DNSException:
+        return False
+    for rr in answers:
+        target = str(rr.target).rstrip(".").lower()
+        if _matches(target, ".outlook.com") or target == "autodiscover.outlook.com":
+            return True
+    return False
+
+
+def resolve_gateway(result: MXResult, timeout: float = 5.0) -> MXResult:
+    """Second look at a domain the MX alone could not place.
+
+    Only ever promotes to MICROSOFT; anything it cannot confirm comes back
+    untouched and still needing review. Kept separate from `classify()` so the
+    extra DNS query is paid only for the domains that need it, rather than on
+    every row of a ten-thousand-domain list.
+    """
+    if result.provider is not Provider.GATEWAY:
+        return result
+    if not autodiscover_says_microsoft(result.domain, timeout):
+        return result
+    behind = f"Microsoft 365 behind {result.vendor}" if result.vendor else "Microsoft 365"
+    return MXResult(result.domain, Provider.MICROSOFT, result.hosts,
+                    result.reason, behind, result.per_host)
+
+
 def classify(domain: str, timeout: float = 5.0) -> MXResult:
     """Resolve MX for `domain` and classify the mail provider.
 
